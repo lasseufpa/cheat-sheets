@@ -1,0 +1,79 @@
+\section*{Chapter 2 -- Transforms}
+
+\textbf{One-sided Z-transform pair:}
+\[
+a^n u[n]
+\;
+\xleftrightarrow{\mathcal{Z}}
+\;
+\frac{1}{1-a z^{-1}},
+\qquad
+\mathrm{ROC}: |z|>|a|.
+\]
+
+\textbf{Orthonormal DFT pair:}
+\[
+X[k]=\frac{1}{\sqrt{N}}
+\sum_{n=0}^{N-1}x[n](W_N)^{nk},
+\qquad
+x[n]=\frac{1}{\sqrt{N}}
+\sum_{k=0}^{N-1}X[k](W_N)^{-nk}.
+\]
+
+\textbf{Forward and inverse DFT matrices for $N=4$:}
+\[
+A=
+\begin{bmatrix}
+1&1&1&1\\
+1&-\jj&-1&\jj\\
+1&-1&1&-1\\
+1&\jj&-1&-\jj
+\end{bmatrix},
+\quad
+A^{-1}=\frac{A^H}{N}
+=
+\frac{1}{4}
+\begin{bmatrix}
+1&1&1&1\\
+1&\jj&-1&-\jj\\
+1&-1&1&-1\\
+1&-\jj&-1&\jj
+\end{bmatrix}.
+\]
+
+\textbf{Forward DCT matrix obtained with \texttt{A=dctmtx(3)} in MATLAB:}
+\[
+A=
+\begin{bmatrix}
+0.577&0.577&0.577\\
+0.707&0.000&-0.707\\
+0.408&-0.816&0.408
+\end{bmatrix}.
+\]
+
+This matrix is orthonormal, and its inverse is the Hermitian transpose.
+
+\textbf{Common Z-transform pairs:}
+%\img{pds_form_assets/z_table.png}
+
+\textbf{Continuous-Time Fourier Transform (FT) pairs:}
+%\img{pds_form_assets/ctft_table.png}
+
+\textbf{Residues in partial-fraction expansions:}
+\[
+A_i=
+\left.
+(s-p_i)X(s)
+\right|_{s=p_i}.
+\]
+
+%\img{pds_form_assets/residue_summary.png}
+
+\textbf{Discrete-Time Fourier Transform (DTFT) pairs:}
+%\img{pds_form_assets/dtft_table.png}
+
+\textbf{Z-transform properties:}
+%\img{pds_form_assets/z_prop_table.png}
+
+\textbf{Summary of Fourier series and transforms:}
+%\img{pds_form_assets/fourier_summary.png}
