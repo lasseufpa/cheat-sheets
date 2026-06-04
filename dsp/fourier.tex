@@ -1,0 +1,460 @@
+\documentclass{article}
+%\usepackage{mathbbol}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{float}% If comment this, figure moves to Page 2 %https://tex.stackexchange.com/questions/32598/force-latex-image-to-appear-in-the-section-in-which-its-declared
+\usepackage[a4paper,bindingoffset=0.2in,left=0.2in,right=0.2in,top=0.2in,bottom=0.3in,footskip=.25in]{geometry}
+\usepackage{hyperref} 
+
+\newcommand{\dw}{\Omega} %discrete-time angular frequency
+\newcommand{\aw}{\omega} %continuous-time angular frequency
+\newcommand{\adoptedbook}{1} %use 1 for Haykin and 2 for Oppenheim
+
+%\newcommand{\dw}{\omega} %discrete-time angular frequency
+%\newcommand{\aw}{\Omega} %continuous-time angular frequency
+%\newcommand{\adoptedbook}{2} %use 1 for Haykin and 2 for Oppenheim
+
+
+%From
+%http://tex.stackexchange.com/questions/62974/numbering-equations-in-tabular-environment
+\newcommand{\tagarray}{%
+\mbox{}\refstepcounter{equation}%
+$(\theequation)$%
+}
+%\textrm{~~~}$(\theequation)$%
+
+%\textheight = 592pt
+\title{Fourier Analysis: Properties and Pairs}
+\author{Prof. Aldebaro Klautau, Universidade Federal do Pará (UFPA), Belém, Brazil}
+%\date{1o semestre de 2014}
+
+\begin{document}
+
+\maketitle
+
+\section{References}
+
+\begin{itemize}
+	\item $[1]$ ``Sinais e Sistemas'' de S. Haykin e B. Van Veen, 2001, Bookman, 
+	\item $[2]$ ``Processamento em tempo discreto de sinais'', de Oppenheim et al, 3a edição.
+\end{itemize}
+
+\section{Introduction and adopted notation}
+\begin{itemize}
+
+\item A série e transformada de Fourier em tempo contínuo usam siglas em inglês FS e FT, respectivamente, enquanto em tempo discreto são DTFS (discrete-time Fourier series) e DTFT (discrete-time Fourier transform).
+
+\item We then have four pairs of equations to perform Fourier analysis: FS, FT, DTFS and DTFT. All these eight equations assume the analysis is performed over an infinite duration time interval. Besides these four pairs, we also have the discrete Fourier transform (DFT) for dealing with finite-duration signal analysis (the signal can be represented by a finite-length array). The fast Fourier transform (FFT) algorithms are efficient methods to compute the DFT. The DFT is mathematically equivalent to the DTFS, but the DTFS is interpreted as representing a periodic signal of infinite duration while the DFT represents a signal with finite duration.
+
+\item Neste texto, assume-se que $\aw$ é a frequência \emph{angular} em tempo contínuo, em rad/s. Além disso, $\aw = 2 \pi f$, onde $f$ é a frequência (``linear'') em tempo contínuo, em Hz.
+
+\item Neste texto, assume-se que $\dw$ é a frequência \emph{angular} em tempo discreto, em radianos (rad).
+
+\item Observe que o livro [2] ``Processamento em tempo discreto de sinais'', 3a edição, assume que a frequência angular em tempo discreto (em rad) é denotada como $\omega$ e em tempo contínuo como $\Omega$. O livro [1] de Haykin et al assume o contrário. Esta tabela assume a mesma convenção de [\adoptedbook].
+
+\item $x[n]$ e $x(t)$ são sinais de tempo discreto e contínuo, com $X(e^{j \dw})$ e $X(\aw)$ (ou $X(j \aw$)) sendo suas transformadas de Fourier (DTFT e FT), respectivamente. É possível também usar $X(f)$ ao invés de $X(\aw)$.
+
+\item $c_k$ e $X[k]$ são usados para as séries de Fourier de tempo contínuo e discreto, respectivamente.
+
+\item Ao lidar com sinais periódicos no tempo discreto, $N$ amostras é o período fundamental, e $\dw_0 = 2\pi/N$ é a freqûencia fundamental em rad. No tempo contínuo o período é $T_0$ e a freqûencia fundamental pode ser expressa por $F_0=1/T_0$ Hz ou $\aw_0=2\pi/T_0$ rad/s.
+
+\item Considerando $x[n]$ e $x(t)$ dados em volts, os valores das séries $c_k$ e $X[k]$ também estão em volts, e o da transformada $X(f)$ em volts/Hz, sendo uma ``densidade de volts'' ao longo da frequência. Pode-se fazer analogia da FS e DTFS com funções massa de probabilidade e da FT e DTFT com funções densidade de probabilidade. As expressões de  $X(\aw)/(2 \pi)$ e $X(e^{j \dw})/(2 \pi)$ podem ser interpretados como volts por rad/s e volts por rad, respectivamente, levando-se em conta o fator de $1/(2\pi)$ nas expressões de suas transformadas inversas.
+
+\item Transformadas são projetadas para representar sinais não-periódicos, mas elas podem representar também o espectro de sinais periódicos. Nesse caso, cada valor $c_k$ ou $X[k]$ da série, aparece como a área do respectivo impulso na transformada. Por exemplo, um coseno com amplitude 16 tem FS $c_{1} = c_{-1} = 8$, e é representado pela FT como $8\delta(f-F_0)$ e $8\delta(f+F_0)$ se usando $X(f)$ ou $16 \pi \delta(f-\aw_0)$ e $16 \pi \delta(f+\aw_0)$ se usando $X(\aw)$.
+
+\item Pratique usar linearidade. Por exemplo, se a tabela indica a transformada $X(f)$ de um seno de amplitude 1, a transformada para um seno de amplitude 5 é $5 X(f)$.
+
+\item Há dualidade entre periódico e discreto. Se em um domínio o sinal é periódico, no outro será discreto e vice-versa. Por exemplo, quando o sinal é contínuo no tempo e periódico, seu espectro é respectivamente não-periódico (herança do contínuo no tempo) e discreto (herança do periódico).
+
+
+\item O $\textrm{sinc}(x) = \sin(\pi x)/(\pi x)$ possui zeros em $x=\pm 1, 2, 3, \cdots$ e na origem $x=0$ seu valor é $\textrm{sinc}(0)=1$.
+
+\end{itemize}
+
+\section{Definitions and hints for continuous-time Fourier analysis: FS and FT}
+\begin{itemize}
+
+\item Comutar entre $X(f)$ e $X(\aw)$ é útil. Por exemplo, tendo-se um gráfico de $X(f)$, basta multiplicar a abscissa por $2 \pi$ (ou dividi-la se for de $X(\aw)$ para $X(f)$), sem alterar a amplitude. Mas se há impulsos envolvidos, um fator $2 \pi$ deve ser usado para escalar as suas áreas ao comutar entre $X(f)$ e $X(\aw)$. Devido à propriedade do escalamento do impulso, $A \delta(f)$ com área $A$ em $X(f)$ passa a ser $2 \pi A \delta(\aw)$ com área $2 \pi A$ em $X(\aw)$.
+
+\item Os coeficientes da série de um sinal periódico no tempo podem ser obtidos fazendo-se amostragem no domínio da frequência da transformada de um período do sinal. Por exemplo, seja o sinal $rect_{T_1}(t)$ da Eq. (\ref{FT2}) usado como base para obter os coeficientes de sua versão periódica (trem de pulsos) da Eq. (\ref{FS2}), através de convolução no tempo com o trem de impulsos 
+da Eq. (\ref{FS6}). No domínio da frequência, esta convolução corresponde a uma amostragem, multiplicando-se os espectros, de forma que $c_k =1/T_0 \times X(f)|_{f=\frac{k}{T_0}}$, que gera  Eq. (\ref{FS2}).
+
+\end{itemize}
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Transformadas de Fourier de Tempo Contínuo (FT) com transformada $X(f)$ em Hertz}
+%Apêndice C.4
+\begin{tabular}{|c|c|c|c|}
+
+\hline Eq. & Domínio do Tempo & Domínio da Frequência & Comentário \\
+\hline 
+\tagarray\label{FTb} & $x(t)=\int_{-\infty}^\infty X(f)e^{j 2 \pi f t}df$ & $X(f)=\int_{-\infty}^\infty x(t)e^{-j2 \pi f t}dt$ & frequencia em Hz (nao rad/s)\\
+\hline
+\tagarray\label{FT2} & $\textrm{rect}_{T_1}(t)=\left\{\begin{array}{lr} 1,&|t|\le T_1/2 \\ 0,& \textrm{caso \; contrário}  \end{array} \right.$ & $X(f) = T_1 \textrm{sinc}(f T_1)$ & Zeros em $f=\pm 1/T_1, \pm 2/T_1, \cdots$ \\
+& &  & com ``largura de banda'' $1/T_1$ Hz\\
+\hline
+\tagarray\label{FT3} & $ \frac{1}{\pi t} \sin(2 \pi F t) = 2 F \textrm{sinc}(2Ft)$ & $X(f)= \left\{\begin{array}{lr} 1,&|f| \le F \\ 0,& \textrm{otherwise} \end{array} \right.$ & pulse $\overset{FT}{\longleftrightarrow}$ sinc. $F$ in Hz\\
+\hline
+\tagarray\label{FT4} & $\delta(t) $ & $X(f)=1$ &  vertical $\overset{FT}{\longleftrightarrow}$ horizontal\\
+\hline
+\tagarray\label{FT5} & $1$ & $X(f)=\delta(f)$  & vertical $\overset{FT}{\longleftrightarrow}$ horizontal\\
+\hline
+\tagarray\label{FT6} & $u(t)$ & $X(f) = \frac{1}{j 2 \pi f} +\frac{\delta(f)}{2}$ & $1/(j 2 \pi f)$ é ``integrador''\\
+\hline
+\tagarray\label{FT7} & $e^{-at}u(t),\hspace{1cm} Re(a) >0$ & $X(f) = \frac{1}{a+j2\pi f}$ & See Eq. (\ref{FT7})\\
+\hline
+\tagarray\label{FT8} & $te^{-at}u(t),\hspace{1cm} Re(a) >0$ & $X(f) = \frac{1}{(a+j2 \pi f)^2}$ & $\int e^{f(x)} dx = f(x)/f'(x)$\\
+\hline
+\tagarray\label{FT9} & $e^{-a|t|},\hspace{1cm}a>0$ & $X(f) = \frac{2a}{a^2+(2 \pi f)^2}$ & Decompor em $t<0$ e $t \ge 0$\\
+\hline
+\tagarray\label{FT10} & $\frac{1}{\sqrt{2\pi}} e^{-t^2/2}$ & $X(f) = e^{-(2 \pi f)^2/2}$ & Gaussiana $\overset{FT}{\longleftrightarrow}$ Gaussiana \\
+\hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Transformadas de Fourier de Tempo Contínuo (FT) com transformada $X(\aw)$ em rad/s (e algumas também em $X(f)$).}
+%Apêndice C.4
+\begin{tabular}{|c|c|c|c|}
+
+\hline Eq. & Domínio do Tempo & Domínio da Frequência & Comentário \\
+\hline 
+\tagarray\label{FT1a} & 
+$x(t)=\frac{1}{2{\pi}}\int_{-\infty}^\infty X(j\aw)e^{j\aw t}d\aw$ & $X(j\aw)=\int_{-\infty}^\infty x(t)e^{-j\aw t}dt$ & $\aw=2\pi f$, daí $d \aw = 2 \pi df$ \\
+\tagarray\label{FTbw} & ou $x(t)=\int_{-\infty}^\infty X(f)e^{j 2 \pi f t}df$ & $X(f)=\int_{-\infty}^\infty x(t)e^{-j2 \pi f t}dt$ & e há o termo $\frac{1}{2 \pi}$ em (\ref{FT1a})\\
+\hline
+\tagarray\label{FT2w} & $\textrm{rect}_{T_1}(t)=\left\{\begin{array}{lr} 1,&|t|\le T_1/2 \\ 0,& \textrm{Caso \; contrário}  \end{array} \right.$ & $X(f) = T_1 \textrm{sinc}(f T_1)$ & Zeros em $f=\pm 1/T_1, \pm 2/T_1, \cdots$ \\
+& & ou $X(j\aw)=\frac{2}{\aw}\sin \left( \frac{\aw T_1}{2} \right) $ & com ``largura de banda'' $1/T_1$ Hz\\
+\hline
+\tagarray\label{FT3w} & $\frac{1}{\pi t} \textrm{sin}(Wt)$ & $X(j\aw)= \left\{\begin{array}{lr} 1,&|\aw| \le W \\ 0,& \textrm{otherwise} \end{array} \right.$ & pulse $\overset{FT}{\longleftrightarrow}$ sin, NOT sinc. $W$ in rad/s\\
+\hline
+\tagarray\label{FT4w} & $\delta(t) $ & $X(j\aw) = 1$ ou $X(f)=1$ &  vertical $\overset{FT}{\longleftrightarrow}$ horizontal\\
+\hline
+\tagarray\label{FT5w} & $1$ & $X(j\aw) = 2\pi \delta(\aw)$ ou $X(f)=\delta(f)$  & vertical $\overset{FT}{\longleftrightarrow}$ horizontal\\
+\hline
+\tagarray\label{FT6w} & $u(t)$ & $X(j\aw) = \frac{1}{j\aw} +\pi \delta(\aw)$ & $1/(j \aw)$ é ``integrador''\\
+\hline
+\tagarray\label{FT7w} & $e^{-at}u(t),\hspace{1cm} Re(a) >0$ & $X(j\aw) = \frac{1}{a+j\aw}$ & Eq. (\ref{CTRP3}) with $\gamma = aj$\\
+\hline
+\tagarray\label{FT8w} & $te^{-at}u(t),\hspace{1cm} Re(a) >0$ & $X(j\aw) = \frac{1}{(a+j\aw)^2}$ & $\int e^{f(x)} dx = f(x)/f'(x)$\\
+\hline
+\tagarray\label{FT9w} & $e^{-a|t|},\hspace{1cm}a>0$ & $X(j\aw) = \frac{2a}{a^2+\aw^2}$ & Decompor em $t<0$ e $t \ge 0$\\
+\hline
+\tagarray\label{FT10w} & $\frac{1}{\sqrt{2\pi}} e^{-t^2/2}$ & $X(j\aw) = e^{-\aw^2/2}$ & Gaussiana $\overset{FT}{\longleftrightarrow}$ Gaussiana \\
+\hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Séries de Fourier de Tempo Contínuo (FS), $T_0$ é o período fundamental de $x(t) = x(t+T_0), \forall t$.}
+%Apêndice C.2
+\begin{tabular}{|c|c|c|c|}
+
+\hline
+Eq. & Domínio do Tempo & Domínio da Frequência & Comentário \\
+\hline
+\tagarray\label{FS1} & $x(t) = \sum\limits_{k=-\infty}^\infty c_k e^{jk\aw_0t} $ & $c_k = X[k]= \dfrac{1}{T_0}\displaystyle\int_{\langle T_0 \rangle} x(t)e^{-jk\aw_0t}dt$ & $\int_{\langle T_0 \rangle}$ denota integral em 1 período\\ 
+%&\\
+%$\vspace{-16pt}$ & \\
+%Período = $T_0$ & $\aw_0 = \dfrac{2 \pi}{T_0}$ \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{FS2} & $x(t)=  \left\{ {\begin{array}{l} {1, \hspace{6pt}|t| \le T_1/2} \\ {0, \hspace{6pt} T_1/2 < |t| \le T_0/2}\\ \end{array}}  \right.$  & $c_k=\dfrac{\sin \left(k\aw_0 (T_1/2) \right)} {k\pi} = \frac{T_1}{T_0} \textrm{sinc} \left( \frac{k T_1}{T_0} \right)$ & Pulso $\overset{FS}{\longleftrightarrow}$ sinc\\
+$\vspace{-10pt}$ &  \\ &
+$x(t)=x(t+T_0)$ & \\
+$\vspace{-5pt}$ & \\
+\hline
+%$\vspace{-9pt}$ & \\
+\tagarray\label{FS3} & $e^{jp\aw_0t}$ & 
+%\begin{equation}
+$c_k = \delta[k-p]$
+%\end{equation}
+& Exponencial complexa\\
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{FS4} & $\cos(p\aw_0t)$ &  $  c_k =  \frac{1}{2}\delta[k-p] + \frac{1}{2}\delta[k+p] $ & $\cos(x) = \frac{1}{2} (e^{jx} + e^{-jx})$ e Eq. (\ref{FS3})\\
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{FS5} & $\sin(p\aw_0t)$ & $c_k = \dfrac{1}{2j}\delta[k-p] - \dfrac{1}{2j}\delta[k+p] $ & $\sin(x) = \frac{1}{2j} (e^{jx} - e^{-jx})$ e Eq. (\ref{FS3})\\ 
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{FS6} & $\sum_{p=-\infty}^{\infty} \delta(t - pT)$ & $c_k = \dfrac{1}{T_0}, \textrm{~~~}\forall k$  & Trem de impulsos \\
+\hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Transformadas de Fourier de Sinais Periódicos $x(t)=x(t+T_0)$ e Contínuous (coeficientes da FS viram impulsos na FT), onde $\aw_0 = 2 \pi/T_0$. Caso queira usar $X(f)$, as áreas dos impulsos em $X(j \aw)$ devem ser divididas por $2\pi$, como por exemplo 
+$X(f) = \delta(f-f_0)$ ao invés de $X(j\aw) = 2\pi\delta(\aw-\aw_0)$, onde $\aw_0 = 2 \pi f_0$.}
+%Apêndice C.5
+\begin{tabular}{|c|c|c|}
+
+\hline
+
+Eq. & Sinal Periódico de Domínio de Tempo & Transformada de Fourier \\
+
+\hline
+
+\tagarray\label{PCFT1} & $x(t) = \sum\limits_{k=-\infty}^{\infty}X[k]e^{jk\aw_0t}$ & $X(j\aw) = 2\pi \sum\limits_{k=-\infty}^{\infty}X[k]\delta(\aw-k\aw_0)$ ou
+ $X(f) =  \sum\limits_{k=-\infty}^{\infty}X[k]\delta(f-k F_0)$\\
+
+\hline
+\tagarray\label{PCFT2}  & $x(t) = \cos(\aw_ot)$ & $X(j\aw) = \pi\delta(\aw-\aw_0)+\pi\delta(\aw+\aw_0)$\\
+
+\hline
+
+\tagarray\label{PCFT3} & $x(t) = \sin(\aw_ot)$ &  $X(j\aw) = \frac{\pi}{j}\delta(\aw-\aw_0) - \frac{\pi}{j}\delta(\aw+\aw_0)$ \\
+
+\hline
+
+\tagarray\label{PCFT4} & $x(t) = e^{j\aw_ot}$ &  $X(j\aw) = 2\pi\delta(\aw-\aw_0)$ \\
+
+\hline
+
+\tagarray\label{PCFT5} & $x(t) = \sum\limits_{n=-\infty}^{\infty}\delta(t-n T_0)$ & $X(j\aw) = \frac{2\pi}{T_0}\sum\limits_{k=-\infty}^{\infty}\delta\big(\aw-k\frac{2\pi}{T_0}\big)$ ou
+ $X(j\aw) = \aw_0 \sum\limits_{k=-\infty}^{\infty}\delta\big(\aw-k \aw_0 \big)$ \\
+
+
+\hline
+
+$\vspace{-10pt}$ & \\ 
+\tagarray\label{PCFT6} & $x(t) = \left\{ {\begin{array}{l} {1, \hspace{6pt}|t|< T_1/2 } \\ {0, \hspace{6pt} T_1/2<|t|< T_0/2 }\\ \end{array}}  \right.$ & $X(j\aw) = \sum\limits_{k=-\infty}^{\infty} \frac{2 \sin(k\aw_0 (T_1/2))}{k}\delta(\aw-k\aw_0)$
+\\
+%$\vspace{-10pt}$ & \\ $x(t+T_0) = x(t)$ & \\ $\vspace{-5pt}$ & \\
+\hline 
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Propriedades das Representações de Fourier de Tempo Contínuo (FT e FS)}
+%Apêndice C.7, pag. 653 apenas
+\resizebox{1.0\textwidth}{!}{
+\begin{tabular}{|c|c|c|c|}
+\hline Eq.& & Transformada de Fourier & Série de Fourier \\
+ & &$x(t) \overset{FT}{\longleftrightarrow} X(j\aw)$ & $x(t)\overset{FS;\aw_{0}}{\longleftrightarrow}X[k]$ \\
+& & $y(t) \overset{FT}{\longleftrightarrow}Y(j\aw)$ & $y(t)\overset{FS;\aw_{0}}{\longleftrightarrow}Y[k]$\\  &\textit{Propriedade}& & Período = $T_0$ \\
+ \hline \tagarray\label{CTRP1} & Linearidade & $ax(t)+by(t)\overset{FT}{\longleftrightarrow}aX(j\aw)+bY(j\aw)$ & $ax(t)+by(t)\overset{FS;\aw_{0}}{\longleftrightarrow}aX[k]+bY[k]$\\
+ \hline \tagarray\label{CTRP2} & Deslocamento no tempo & $x(t-t_{0})\overset{FT}{\longleftrightarrow}e^{-j\aw t_{0}}X(j\aw)$& x$(t-t_{0})\overset{FS;\aw_{0}}{\longleftrightarrow}e^{-jk\aw_{0}t_{0}} X[k]$\\
+ \hline \tagarray\label{CTRP3} & Deslocamento em frequência & $e^{j\gamma t}x(t)\overset{FT}{\longleftrightarrow}X(j(\aw-\gamma))$ & $e^{jk_{0}\aw_{0}t}x(t)\overset{FS;\aw_{0}}{\longleftrightarrow}X[k-k_{0}]$\\
+ \hline \tagarray\label{CTRP4} & Mudança de escala & $x(at)\overset{FT}{\longleftrightarrow}\frac{1}{|a|}X(\frac{j\aw}{a})$ & $x(at)\overset{FS;a\aw_{0}}{\longleftrightarrow}X[k]$\\
+ \hline \tagarray\label{CTRP5} & Diferenciação-tempo & $\frac{d}{dt} x(t)\overset{FT}{\longleftrightarrow}j \aw X (j\aw)$ & $\frac{d}{dt}x(t)\overset{FS;\aw_{0}}{\longleftrightarrow}jk\aw_{0}X[k]$\\
+ \hline \tagarray\label{CTRP6} & Diferenciação-frequência & $-jtx(t)\overset{FT}{\longleftrightarrow}\frac{d}{d\aw}X(j\aw)$ & - \\
+ \hline \tagarray\label{CTRP7} & Integração / Soma & $\int_{-\infty}^{t}x(\tau)d\tau \overset{FT}{\longleftrightarrow}\frac{X(j\aw)}{j\aw}+\pi X(j_{0})\delta(\aw)$ & - \\
+ \hline \tagarray\label{CTRP8} & Convolução & $\int_{-\infty}^{\infty}x(\tau)y(t-\tau)d\tau \overset{FT}{\longleftrightarrow}X(j\aw)Y(j\aw)$ & $\int_{<T_0>} x(\tau)y(t-\tau)d\tau\overset{FS;\aw_{0}}{\longleftrightarrow}TX[k]Y[k]$\\
+ \hline \tagarray\label{CTRP9} & Modulação & $x(t)y(t)\overset{FT}{\longleftrightarrow}\frac{1}{2\pi}\int_{-\infty}^{\infty}X(jv)Y(j(\aw - v))dv$ & $x(t)y(t)\overset{FS;\aw_{0}}{\longleftrightarrow}\sum_{l=-\infty}^{\infty}X[l]Y[k-l]$\\
+  \hline \tagarray\label{CTRP10} & Teorema de Parseval & $ \int_{-\infty}^{\infty}|x(t)|^2 dt = \frac{1}{2\pi} \int_{-\infty}^{\infty}|X(j\aw)|^2 d\aw$ & $\frac{1}{T_0} \int_{\langle T_0 \rangle} |x(t)|^2 dt = \sum\limits_{k=-\infty}^{\infty} |X[k]|^2$ \\
+  
+\hline \tagarray\label{CTRP11} & \multirow{2}{*}{Dualidade} & \multirow{2}{*}{ $ X(jt) \overset{FT}{\longleftrightarrow} 2\pi x(-\aw)$} & 
+ $x[n] \overset{DTFT}{\longleftrightarrow} X(e^{j\dw})$ \\ & & & $X(e^{jt}) \overset{FS: t}{\longleftrightarrow} x[-k] $\\  
+  
+ \hline \tagarray\label{CTRP12} & \multirow{4}{*}{Simetria} & $ x(t)$ real $\overset{FT}{\longleftrightarrow} X^* (j\aw) = X(-j\aw) $ & $x(t)$ real $\overset{FS: \aw_0}{\longleftrightarrow} X^*[k] = X[-k]$ \\ & &$x(t)$ imaginário $\overset{FT}{\longleftrightarrow} X^* (j\aw) = -X(-j\aw)$ & $x(t)$ imaginário $\overset{FS: \aw_0}{\longleftrightarrow} X^*[k] = -X[-k]$ \\ & &$x(t)$ real e par $\overset{FT}{\longleftrightarrow}$ Im$ \{ X(j\aw) \} = 0$ & $x(t)$ real e par $\overset{FS:\aw_0}{\longleftrightarrow}$ Im$ \{X[k] \} = 0$ \\ & & $x(t)$ real e ímpar $\overset{FT}{\longleftrightarrow}$ Re$ \{ X(j\aw) \} = 0$ & $x(t)$ real e ímpar $\overset{FS: \aw_0}{\longleftrightarrow}$ Re$ \{ X[k] \} = 0$ \\
+ \hline
+\end{tabular}
+}
+\end{center}
+\end{table}
+
+
+\section{Definitions and hints for discrete-time Fourier analysis: DTFS and DTFT}
+
+\begin{itemize}
+
+\item Lembre que há dualidade entre periódico e discreto. A notação $X(e^{j \dw})$ é para lembrar que $\dw$ é um ângulo e espectros de sinais discretos no tempo são sempre periódicos em múltiplos de $2 \pi$ rad (ou 360 graus). As expressões dos espectros de sinais discretos são relativamente complicadas pois precisam denotar essa periodicidade.
+
+\end{itemize}
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Séries de Fourier de Tempo Discreto (DTFS). $N$ é o período fundamental de $x[n]=x[n+N], \forall n$, $\dw_0 = 2\pi/N$ e $p \in {\cal Z}$ é um inteiro que funciona como variável auxiliar.}
+%Apêndice C.1
+\begin{tabular}{|c|c|c|c|}
+\hline
+Eq. & Domínio do Tempo & Domínio da Frequência & Comentário \\ \hline
+\tagarray\label{DTFS1} &
+$x[n] = \sum\limits_{k=\langle N \rangle} X[k]e^{jkn\dw_0} $ & X[k]= $\dfrac{1}{N}\sum\limits_{n=\langle N \rangle} x[n]e^{-jkn\dw_0}$ & $\langle N \rangle$ é intervalo como $0,1,\ldots,N-1$ \\ 
+%&\\
+%$\vspace{-22pt}$ & \\
+%Período = $N$ & $\dw_0 = \dfrac{2 \pi}{N}$ \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{DTFS2} &
+$x[n] = \left\{ {\begin{array}{l} {1, \hspace{6pt}|n| \le M} \\ {0, \hspace{6pt} M < |n| \le N/2}\\ \end{array}}  \right.$ & $X[k]=\dfrac{\sin \left(k \dfrac{\dw_0}{2} (2M+1) \right)} {N \sin \left(k \dfrac{\dw_0}{2} \right)}$ & Dualidade pulso/``quase sinc''
+\\
+$\vspace{-20pt}$ &  \\ &
+$x[n]=x[n+N]$ & \\
+$\vspace{-5pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{DTFS3} &
+$x[n] = e^{jp\dw_0 n}$ & $ X[k] = \left\{
+{
+\begin{array}{lr}
+{1, \hspace{6pt} k = p,p \pm N, p \pm 2N, \ldots} \\
+{0, \hspace{6pt} \textrm{caso contrário} }
+\end{array}
+} \right. $ & Exponencial complexa \\
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{DTFS4} &
+$x[n] = \cos(p\dw_0 n)$ &  $  X[k] =  \left\{{\begin{array}{lr} {\frac{1}{2},  \hspace{6pt} k = \pm p, \pm p \pm N, \pm p \pm 2N, \ldots}  \\  {0,\hspace{6pt} \textrm{caso\ contrário}}  \end{array}} \right.$ & $\cos(x) = \frac{1}{2} (e^{jx} + e^{-jx})$ e Eq. (\ref{DTFS3})\\
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{DTFS5} &
+$x[n] = \sin(p\dw_0 n)$ & $X[k] = \left\{ {\begin{array}{lr} {\dfrac{1}{2j}, \hspace{6pt} k = p, p \pm N, p \pm 2N,\ldots} \vspace{5 pt} \\ {\dfrac{-1}{2j}, \hspace{6pt} k = -p, -p \pm N, -p \pm 2N, \ldots} \\ {} \\ {0, \hspace{6pt} \textrm{caso\ contrário}} \end{array}} \right.$ & $\sin(x) = \frac{1}{2j} (e^{jx} - e^{-jx})$ e Eq. (\ref{DTFS3})\\ 
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{DTFS6} &
+$x[n] = 1$ & $X[k] = \left \{ {\begin{array}{l l} {1, \hspace{6pt} k = 0, \pm N, \pm 2N, \ldots} \\ {0, \hspace{6pt} \textrm{caso\ contrário} } \end{array}} \right.$ & Dualidade vertical/horizontal\\
+$\vspace{-9pt}$ & \\
+\hline
+$\vspace{-9pt}$ & \\
+\tagarray\label{DTFS7} &
+$x[n] = \sum_{p=-\infty}^{\infty} \delta[n - pN]$ & $X[k] = \dfrac{1}{N}, \textrm{~~~}\forall k$ & Dualidade vertical/horizontal.\\
+& &  & Impulses starting at origin $n=0$.\\
+\hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Transformadas de Fourier de Tempo Discreto (DTFT)}
+%Apêndice C.3
+\begin{tabular}{|c|c|c|}
+
+\hline Eq. & Domínio do Tempo & Domínio da Frequência \\
+\hline
+\tagarray\label{DTFT1} &
+$x[n]=\frac{1}{2{\pi}}\int_{<2{\pi}>}X(e^{j\dw})e^{j\dw n} d\dw$
+& $X(e^{j\dw})=\sum_{n=-\infty}^\infty x[n]e^{-j\dw n}$ \\
+\hline
+\tagarray\label{DTFT2} &
+$x[n]=\left\{\begin{array}{lr} 1,&|n| \le M \\ 0,& \textrm{Caso \; contrário} \end{array} \right.$ & $X(e^{j\dw})=\frac{\sin[\dw(\frac{2M+1}{2})]}{\sin(\frac{\dw}{2})} $ \\
+\hline
+\tagarray\label{DTFT3} &
+$x[n] = \alpha^nu[n],\hspace{1cm}|\alpha|<1$ & $X(e^{j\dw}) = \frac{1}{1-\alpha{e^{-j\dw}}}$ \\
+\hline
+\tagarray\label{DTFT4} &
+$x[n] = \delta[n] $ & $X(e^{j\dw}) = 1$ \\
+\hline
+\tagarray\label{DTFT5} &
+$x[n] = u[n]$ & $X(e^{j\dw}) = \frac{1}{1-e^{-j\dw}} + \pi\sum_{p=-\infty}^\infty \delta(\dw-2\pi p)$ \\
+\hline
+\tagarray\label{DTFT6} &
+$x[n]=\frac{1}{\pi n}\sin(Wn),\hspace{1cm}0<W \le \pi$ &
+$X(e^{j\dw}) = \left\{
+\begin{array}{lr} 
+1,& |\dw| \le W \\
+0,& W<|\dw| \le \pi\\
+\end{array} \right.$ \\ & & $X(e^{j\dw}) \hspace{10 mm} \textrm{tem período } 2\pi $\\
+\hline
+\tagarray\label{DTFT7} &
+$x[n] = (n+1)\alpha^nu[n]$ & $X(e^{j\dw}) = \frac{1}{(1-{\alpha}e^{-j\dw})^2}$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Pares de Transformadas de Fourier de Sinais Periódicos e Discretos (coeficientes da DTFS viram impulsos na DTFT)}
+%Apêndice C.6
+\begin{tabular}{|c|c|c|}
+\hline
+Eq. & Sinal Periódico de Domínio de Tempo & Transformada de Fourier de Tempo Discreto \\
+\hline
+\tagarray\label{PDFT1} &
+
+$x[n] = \sum\limits_{k=<N>}X[k]e^{jk\dw_0n}$ & $X(e^{j\dw}) = 2\pi\sum\limits_{k=-\infty}^{\infty}X[k]\delta(\dw-k\dw_0)$\\
+
+
+\hline
+\tagarray\label{PDFT2} &
+$x[n] = \cos(\dw_1n)$ & $X(e^{j\dw}) = \pi\sum\limits_{k=-\infty}^{\infty}\delta(\dw-\dw_1-k2\pi)+\delta(\dw+\dw_1-k2\pi)$\\
+
+\hline
+\tagarray\label{PDFT3} &
+$x[n] = \sin(\dw_1n)$ & $X(e^{j\dw}) = \frac{\pi}{j} \sum\limits_{k=-\infty}^{\infty}\delta(\dw-\dw_1-k2\pi)-\delta(\dw+\dw_1-k2\pi)$\\
+
+\hline
+\tagarray\label{PDFT4} &
+$x[n] = e^{j\dw_1n}$ & $X(e^{j\dw}) = 2\pi\sum\limits_{k=-\infty}^{\infty}\delta(\dw-\dw_1-k2\pi)$ \\
+
+\hline
+\tagarray\label{PDFT5} &
+$x[n] = \sum\limits_{k=-\infty}^{\infty}\delta(n-kN)$ & $X(e^{j\dw})= \frac{2\pi}{N}\sum\limits_{k=-\infty}^{\infty} \delta\big(\dw-\frac{k2\pi}{N}\big) $ \\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{table}[H]
+\begin{center}
+\caption{Propriedades das Representações de Fourier de Tempo Discreto  (DTFT e DTFS)}
+%Apêndice C.7, pag. 654 apenas
+\resizebox{1.0\textwidth}{!}{
+\begin{tabular}{|c|c|c|c|}
+\hline Eq. & & FT de Tempo Discreto & FS de Tempo Discreto \\ & &$x[n] \overset{DTFT}{\longleftrightarrow} X(e^{j\dw})$ & $x[n] \overset{DTFS:\dw_0}{\longleftrightarrow} X[k]$ \\ & &$y[n] \overset{DTFT}{\longleftrightarrow} Y(e^{j\dw})$ & $y[n] \overset{DTFS:\dw_0}{\longleftrightarrow} Y[k]$ \\ &\textit{Propriedade} & & Período = N \\
+\hline \tagarray\label{DTRP1} & Linearidade & $ax[n] + by[n] \overset{DTFT}{\longleftrightarrow} aX(e^{j\dw})+bY(e^{j\dw})$  & $ax[n]+by[n] \overset{DTFS:\dw_0}{\longleftrightarrow} aX[k]+bY[k]$ \\
+\hline \tagarray\label{DTRP2} & Deslocamento no tempo & $x[n - n_0] \overset{DTFT}{\longleftrightarrow} e^{-j\dw n_0}X(e^{j\dw})$ & $x[n-n_0] \overset{DTFS:\dw_0}{\longleftrightarrow} e^{-jk\dw_0n_0}X[k]$ \\
+\hline \tagarray\label{DTRP3} & Deslocamento em frequência & $e^{j\Gamma n}x[n] \overset{DTFT}{\longleftrightarrow} X(e^{j(\dw - \Gamma)})$ & $e^{jk_0\dw_0 n}x[n] \overset{DTFS:\dw_0} {\longleftrightarrow} X[k-k_0]$ \\
+\hline \tagarray\label{DTRP4} & \multirow{2}{*}{Mudança de escala} & $ x_z[n] = 0, n \neq lp $ & $ x_z[n] = 0, n \neq lp $ \\  &  &$x_z[pn] \overset{DTFT}{\longleftrightarrow} X_z(e^{j\dw lp})$ & $x_z[pn] \overset{DTFS: p\dw_0}{\longleftrightarrow} pX_z[k]$ \\
+\hline \tagarray\label{DTRP5} & Diferenciação-tempo & - & - \\
+\hline \tagarray\label{DTRP6} & Diferenciação-frequência & $-jnx[n] \overset{DTFT}{\longleftrightarrow} \frac{d}{d\dw}X(e^{j\dw})$ & - \\
+\hline \tagarray\label{DTRP7} & Integração/Soma & $\sum\limits_{k=-\infty}^{n} x[k]\overset{DTFT}{\longleftrightarrow} \frac{X(e^{j\dw})}{1 - e^{-j\dw}} + \pi X(e^{j0}) \sum\limits_{k=-\infty}^{\infty} \delta(\dw - k2\pi) $ & - \\
+\hline \tagarray\label{DTRP8} & Convolução & $ \sum\limits_{l=-\infty}^{\infty} x[l]y[n-l] \overset{DTFT}{\longleftrightarrow} X(e^{j\dw})Y(e^{j\dw})$ & $\sum\limits_{l = \langle N \rangle} x[l]y[n-l] \overset{DTFS: \dw_0}{\longleftrightarrow} NX[k]Y[k]$ \\
+\hline \tagarray\label{DTRP9} & Modulação & $ x[n]y[n] \overset{DTFT}{\longleftrightarrow} \frac{1}{2\pi} \int_{\langle 2\pi \rangle} X(e^{j\Gamma})Y(e^{j(\dw - \Gamma)})d\Gamma$ & $x[n]y[n] \overset{DTFS:\dw_0} {\longleftrightarrow} \sum\limits_{l=\langle N \rangle} X[l]Y[k-l]$ \\
+\hline \tagarray\label{DTRP10} & Teorema de Parseval & $ \sum\limits_{n=-\infty}^{\infty}|x[n]|^2 = \frac{1}{2\pi} \int_{\langle 2\pi \rangle} |X(e^{j\dw})|^2 d\dw$ & $ \frac{1}{N} \sum\limits_{n=\langle N \rangle} |x[n]|^2 = \sum\limits_{k=\langle N \rangle} |X[k]|^2$ \\
+\hline \tagarray\label{DTRP11} & \multirow{2}{*}{Dualidade} & $ x[n] \overset{DTFT}{\longleftrightarrow} X(e^{j\dw})$ & $X[n]\overset{DTFS: \dw_0}{\longleftrightarrow} \frac{1}{N} x[-k]$ \\ & & $X(e^{jl}) \overset{FS: t} {\longleftrightarrow} x[-k]$ & \\
+\hline \tagarray\label{DTRP12} & \multirow{4}{*}{Simetria} & $ x[n]$ real $\overset{DTFT}{\longleftrightarrow} X^* (e^{j\dw}) = X(e^{-j\dw}) $ & $x[n]$ real $\overset{DTFS: \dw_0}{\longleftrightarrow} X^*[k] = X[-k]$ \\ & & $x[n]$ imaginário $\overset{DTFT}{\longleftrightarrow} X^* (e^{j\dw}) = -X(e^{-j\dw})$ & $x[n]$ imaginário $\overset{DTFS: \dw_0}{\longleftrightarrow} X^* [k] = -X[-k]$ \\ & & $x[n]$ real e par $\overset{DTFT}{\longleftrightarrow}$ Im$ \{ X(e^{j\dw}) \} = 0$ & $x[n]$ real e par $\overset{DTFS:\dw_0}{\longleftrightarrow}$ Im$ \{X[k] \} = 0$ \\ & & $x[n]$ real e ímpar $\overset{DTFT}{\longleftrightarrow}$ Re$ \{ X(e^{j\dw}) \} = 0$ & $x[n]$ real e ímpar $\overset{DTFS: \dw_0}{\longleftrightarrow}$ Re$ \{ X[k] \} = 0$ \\
+\hline
+\tagarray\label{DTRP13} & Conjugação & & $x^*[n]$ $\overset{DTFS:\dw_0}{\longleftrightarrow}$ $X^*[-k]$ \\
+\hline
+\tagarray\label{DTRP14} & Reflexão no tempo & & $x[-n]$ $\overset{DTFS:\dw_0}{\longleftrightarrow}$ $X[-k]$ \\
+\hline
+\end{tabular}
+}
+\end{center}
+\end{table}
+
+\section{Acknowledgments}
+Texto adaptado do livro [1] pela turma de Sinais e Sistemas do 1o Semestre de 2014 da UFPA.
+Depois melhorado pelo discente Carlos Serrato Jr em 2014, e desde então, por mim.
+
+\end{document}
