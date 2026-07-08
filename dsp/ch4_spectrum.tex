@@ -45,7 +45,7 @@ DTFT $X_w(e^{j \dw})$ of the windowed cosine $x_w[n]=x[n] w[n]$:
 
 \emph{Scalloping loss} is the reduction in the measured amplitude of a spectral component when its frequency lies between two adjacent DFT/FFT bin centers rather than at a bin center.
 
-Improving FFT resolution $\Delta f = \fs / \nfft$ by increasing $\nfft$ cannot recover the leakage that occurred due to windowing.
+Improving FFT resolution $\Delta f = \fs / \nfft$ by increasing $\nfft$ \emph{cannot recover the leakage that occurred due to windowing}.
 
 \begin{table}[h]
 \caption{Energy spectral density (ESD) functions. 
@@ -148,6 +148,6 @@ such that $A(z)$ minimizes the power of the prediction error is $x[n] = y[n] - \
 \end{equation}
 Short-time Fourier transform (STFT):
 \begin{equation}
-X(\tau,f) = \int_{-\infty}^{\infty} x(t) w(t-\tau) e^{-j 2 \pi f t} \textrm{d}t,
+X(\tau,f) = \int_{-\infty}^{\infty} x(t) w(t-\tau) e^{-j 2 \pi f t} \textrm{d}t
 \label{eq:stft}
 \end{equation}

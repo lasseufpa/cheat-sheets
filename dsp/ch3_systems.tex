@@ -1,6 +1,187 @@
 \section*{Chapter 3 -- Systems}
 
-\textbf{Bilinear transform:}
+Convolution in discrete (DT) and continuous (CT) time:
+\begin{equation}
+y[n] = \sum_{k=-\infty}^{\infty} x[k] h[n-k]  = \sum_{k=-\infty}^{\infty} h[k] x[n-k].
+\end{equation}
+\begin{equation}
+y(t) =  \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\tau. \int_{-\infty}^{\infty} h(\tau) x(t-\tau) d\tau.
+\label{eq:convolution_in_continuoustime}
+\end{equation}
+Convolution properties:
+\begin{itemize}
+	\item Commutative: $a \conv b = b \conv a$
+	\item Associative: $a \conv (b \conv c) = (a \conv b) \conv c$
+	\item Distributive: $a \conv (b + c) = a \conv b + a \conv c$
+	\item Duration: $N_1+N_2-1$ samples
+	\item Indices: if $a[n]=b[n]\conv c[n]$, the valid products to obtain $a[n_a]$ are $b[n_b]c[n_c]$ with $n_a=n_b+n_c$
+\end{itemize}
+
+\begin{equation}
+y(t) = x_1(t) \conv x_2(t) = \calF^{-1} \{ X_1(f) X_2(f) \}
+\label{eq:convolutionInFreqDomain}
+\end{equation}
+\begin{equation}
+y[n] = x_1[n] \conv x_2[n] = \textrm{DTFT}^{-1} \{ X_1(e^{j \dw}) X_2(e^{j \dw}) \}
+\label{eq:convolutionInFreqDomainDiscreteTime}
+\end{equation}
+
+Periodic or circular convolution (both signals of period $T$):
+\begin{equation}
+x_1(t) \cconv x_2(t) = \frac{1}{T} \int_{<T>} x_1(\tau)  x_2(t-\tau) \textrm{d}\tau
+\label{eq:circularConvolution}
+\end{equation}
+In discrete-time frequency domain (implicit period $2 \pi$):
+\begin{equation}
+x_1[n]  x_2[n] \Leftrightarrow X(e^{j \dw}) \cconv X_2(e^{j \dw})
+\label{eq:windowingConvolution2}
+\end{equation}
+
+\begin{equation}
+y[n] = x_1[n] \cconv x_2[n] = \textrm{FFT}^{-1} \{ X_1[k] X_2[k] \}
+\label{eq:circularConvolutionWithFFT}
+\end{equation}
+
+Complex exponentials are eigenfunctions of LTI systems. In continuous-time (also valid for DT):
 \[
-F_s ...
+e^{s_0 t} \rightarrow\boxed{\calH}\rightarrow H(s_0) e^{s_0 t}.
 \]
+
+\begin{table}[h]
+\centering
+\caption{Nomenclature of special frequencies in filtering.\label{tab:special_freqs}}
+\begin{tabular}{|c|l|}
+\hline 
+Symbol & Description  \\
+\hline 
+$\aw_c$ or $f_c$ & Cutoff frequency: gain falls by $1/\sqrt{2}$ ($-3$ dB)  \\ \hline
+$\aw_n$ & Natural frequency, for example, of a resonator  \\ \hline
+$\aw_0$ & Center frequency of a pole \\ \hline
+$f_p$ & Passband frequency \\ \hline
+$f_r$ & Stopband (or rejection) frequency \\ \hline
+$\fs$ & Sampling frequency (in Hz or samples per sec.) \\ \hline 
+$\fs/2$ & Nyquist (or folding) frequency  \\ \hline 
+\end{tabular}
+\end{table}
+
+
+Quality factor of poles in CT: $Q \defeq \frac{f_n}{ \BW}$ and
+DT: $Q = \frac{\aw_n}{2 \alpha}$.
+
+Second-order Butterworth filter:
+\[
+H(s)=\frac{\aw_0^2}
+{s^2+\sqrt{2}\,\aw_0 s+\aw_0^2}.
+\]
+
+
+Group delay in CT (DT is similar):
+\begin{equation}
+\tau_g(\aw) = - \frac{d \Theta}{d \aw}.
+\label{eq:groupDelay}
+\end{equation}
+
+
+If the deviation in passband should be within $[1- D_p, 1]$ (linear scale)
+the ripple in dB to be within $[-R_p, 0]$ is:
+\[
+R_p = -20 \log_{10} (1-D_p).
+\]
+For stopband:
+\[
+R_s = -20 \log_{10} D_s.
+\]
+
+
+Filter frequency scaling of a prototype $H(s)$ with cutoff frequency 1~rad/s:
+\begin{equation}
+G(s) = H(s)|_{s=s/\aw_c}
+\label{eq:frequencyScaling}
+\end{equation}
+such that $\aw_c$ is the cutoff frequency of the new filter $G(s)$.
+
+
+Simplified notations for $\textrm{A/DT} \{ \cdot \}$ conversion:
+\begin{equation}
+x[n]=x(t)|_{t=n \ts}
+\label{eq:a_dt_conversion}
+\end{equation}
+
+
+DT signal $x[n]$ with DTFT $X(e^{j \dw})$ is converted into a sampled 
+signal $x_s(t)$ with Fourier transform $X_s(\aw)$ via a DT/S conversion, 
+\begin{equation}
+X_s(\aw)  = X(e^{j \dw})|_{\dw = \aw \ts} = X(e^{j \aw \ts}).
+\label{eq:sampledSignalSpectrum}
+\end{equation}
+
+\begin{equation}
+H_s(\aw)  = H_z(e^{j \dw})|_{\dw = \aw \ts} = H_z(e^{j \aw \ts}),
+\label{eq:digitalFilterAndDC}
+\end{equation}
+
+Perfect reconstruction of $x[n]$ when $h(t)$ is a sinc:
+\begin{equation}
+ x(t) = \textrm{DT/S} \{ x[n] \} \conv h(t) = \sum_{n=-\infty}^\infty x[n] \sinc\left( \frac{t}{\ts}-n \right).
+\label{eq:signalReconstructionViaSincs2}
+\end{equation}
+
+Power relation:
+\begin{equation}
+\calP_s \defeq \frac{\calP_d}{\ts}.
+\label{eq:powerSampledSignal}
+\end{equation}
+
+IIR design methods based on $H(s)$:
+a) Matched Z-transform or pole-zero matching: $z_i = e^{s_i \ts}$.
+b) Impulse invariance
+\begin{equation}
+H(z) = \ts \calZ \{ h(t)|_{t=n\ts}\}
+\label{eq:impulseInvariant}
+\end{equation}
+c) Step invariance:
+\begin{equation}
+\calZ^{-1} \left\{ H(z) \frac{1}{1-z^{-1}} \right\} = \calL^{-1} \left. \left\{ H(s) \frac{1}{s} \right\} \right|_{t=n\ts}
+\label{eq:stepInvariance}
+\end{equation}
+d) Backward difference:
+$s \leftarrow (1-z^{-1})/\ts$
+\\
+e) Forward difference:
+$s \leftarrow (1-z^{-1})/(\ts z^{-1})$
+\\
+f) Bilinear (or Tustin's):
+$s \leftarrow  2 \fs \frac{z-1}{z+1}$
+
+Bilinear frequency warping
+\begin{equation}
+\aw = \frac{2}{\ts} \tan \left( \frac{\dw}{2} \right) = 2 \fs \tan \left( \frac{\dw}{2} \right),
+\label{eq:prewarping}
+\end{equation}
+\begin{equation}
+\aw_a = \frac{2}{\ts} \tan \left( \frac{\ts \aw_d}{2} \right).
+\label{eq:prewarping2}
+\end{equation}
+To match a frequency:
+\begin{equation}
+F'_s =  \frac{\aw_m}{ 2\tan \left(  \frac{\aw_m}{2 \fs} \right) },
+\end{equation}
+
+In FIR design via windowing, ideal lowpass filter impulse response:
+\begin{equation}
+h_{\textrm{LP}}[n] = \frac{\sin(\dw_c n)}{\pi n}
+\label{eq:idealLowpass}
+\end{equation}
+Impulse response for the ideal highpass filter:
+\begin{equation}
+h_{\textrm{HP}}[n] = \delta[n] - h_{\textrm{LP}}[n].
+\label{eq:idealHigpass}
+\end{equation}
+
+
+Symmetric FIR has linear phase and can be decomposed as
+\[
+H(e^{j\dw}) = e^{-j \dw \tau_g} A(\dw)
+\]
+
+Realizations of digital filters: direct form I, direct form II, transposed direct form II, SOS in cascade, SOS in parallel.
