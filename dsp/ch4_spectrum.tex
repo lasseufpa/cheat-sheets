@@ -1,6 +1,153 @@
 \section*{Chapter 4 -- Spectral Analysis}
 
-\textbf{PSD:}
+
+Windowing $x_w[n] = x[n] w[n]$ corresponds to \emph{periodic convolution} in frequency-domain:
+\begin{equation}
+X_w(e^{j \dw}) = X(e^{j \dw}) \cconv W(e^{j \dw}),
+\label{eq:freq_domain_windowing}
+\end{equation}
+
+\emph{Hamming} window:
+\begin{equation}
+w[n] = 0.54 - 0.46 \cos \left( \frac{2 \pi n}{N-1} \right), \textrm{~~~}n=0,\ldots,N-1.
+\label{eq:hammingWindow}
+\end{equation}
+``Periodic'' \emph{Hann} window
+\begin{equation}
+w[n] = 0.5 - 0.5 \cos \left( \frac{2 \pi n}{N-1} \right), \textrm{~~~}n=0,\ldots,N-1.
+\label{eq:hannWindow}
+\end{equation}
+
+Important performance metrics of windows: a) width of its main lobe,
+	b) amplitude of its sidelobes,
+	c) rate of sidelobe decay as frequency increases,
+	d) and scalloping loss.
+
+Expressions to investigate bin and non-bin-centered sinusoids, where $\alpha \in \Re$ and $\Delta \dw = 2 \pi / \nfft$:
+\begin{equation}
+x[n]=A \cos \left( \alpha \frac{2 \pi }{\nfft}n \right) \textrm{~~~and~~~}
+x[n]= A\cos \left( \alpha \Delta \dw n \right).
+\end{equation}
+
+
+DTFT $X_w(e^{j \dw})$ of the windowed cosine $x_w[n]=x[n] w[n]$:
+	\begin{equation}
+	\begin{aligned}
+	X_w(e^{j \dw}) = \frac{A}{2} \Bigg[ \frac{\sin \left( \frac{N(\dw + \dw_c)}{2} \right) }{\sin \left( \frac{\dw + \dw_c}{2}\right) } e^{-j\frac{(\dw + \dw_c)(N-1)}{2}} + \\
+	\frac{\sin \left( \frac{N(\dw - \dw_c)}{2} \right) }{\sin \left( \frac{\dw - \dw_c}{2}\right) } e^{-j\frac{(\dw - \dw_c)(N-1)}{2}} \Bigg].
+	\label{eq:dtftWindowedCosine}
+	\end{aligned}
+\end{equation}
+
+\emph{Leakage} is the redistribution of spectral energy caused by windowing a signal.
+
+\emph{Picket-fence} effect is the phenomenon whereby the DFT/FFT observes the continuous DTFT only at the FFT bin centers.
+
+\emph{Scalloping loss} is the reduction in the measured amplitude of a spectral component when its frequency lies between two adjacent DFT/FFT bin centers rather than at a bin center.
+
+Improving FFT resolution $\Delta f = \fs / \nfft$ by increasing $\nfft$ cannot recover the leakage that occurred due to windowing.
+
+\begin{table}[h]
+\caption{Energy spectral density (ESD) functions. 
+The units of $\calG(f)$, $\calG(\aw)/(2 \pi)$ and $\calG(e^{j\dw})/(2 \pi)$ are J/Hz, J/(rad/s) and J/rad, respectively.\label{tab:esd_functions}}
+\begin{tabular}{|l|c|c|c|}
+\hline
+Time  & ESD definition & Property \\ \hline
+Cont. & $\calG(f) = |X(f)|^2$ & $E=\int_{-\infty}^{\infty} \calG(f) \textrm{d}f$  \\ \hline
+Cont.& $\calG(\aw) = |X(\aw)|^2$ & $E=\frac{1}{2 \pi}\int_{-\infty}^{\infty} \calG(\aw) \textrm{d}\aw$  \\ \hline
+Disc. & $\calG(e^{j\dw}) = |X(e^{j\dw})|^2$ & $E=\frac{1}{2 \pi}\int_{<2 \pi>} \calG(e^{j\dw}) \textrm{d}\dw$  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Power spectral density (PSD) functions. 
+The units of $S(f)$, $S(\aw)/(2 \pi)$ and $S(e^{j\dw})/(2 \pi)$ are W/Hz, W/(rad/s) and W/rad, respectively.\label{tab:psd_functions}}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Time &  Definition & Main property \\ \hline
+Cont. &  $S(f) = \calF_f \{ R(\tau) \}$ & $\calP = \int_{- \infty}^\infty S(f) \textrm{d}f$  \\ \hline
+Cont. &  $S(\aw) = \calF_{\aw} \{ R(\tau) \}$ & $\calP = \frac{1}{2\pi} \int_{- \infty}^\infty S(\aw) \textrm{d}\aw$  \\ \hline
+Discr. &  $S(e^{j \dw}) = \calF \{ R[\ell] \}$ & $\calP = \frac{1}{2 \pi}\int_{<2 \pi>} S(e^{j \dw}) \textrm{d}\dw$  \\ \hline
+\end{tabular}
+\end{table}
+PSD of continuous-time periodic deterministic signal:
+\begin{equation}
+S(f) = \sum_{k=-\infty}^{\infty} |c_k|^2 \delta(f - k F_0),
+\label{eq:psdOfPeriodicSignals}
+\end{equation}
+with Fourier Series coefficients $c_k$ and period $T_0=1/F_0$.
+PSD of discrete-time sinusoid $x[n]=A\cos(\dw_1n)$:
 \[
-F_s ...
+S(e^{j\dw}) = \sum_{p=-\infty}^{\infty} \frac{\pi A^2}{2}\left[\delta(\dw+\dw_1+p2\pi) + \delta(\dw-\dw_1+p2\pi) \right]
 \]
+For a WSS random process $\calX(t)$ with PSD $S_x(f)$, the PSD of $\calY(t) = \calX(t) e^{j 2 \pi f_c t}$ is
+$S_y(f) = S_x(f-f_c)$.
+
+Mean-square spectrum (MS spectrum):
+\begin{equation}
+S_{\textrm{ms}}[k] = |\textrm{DTFS}\{x[n]\}|^2.
+\label{eq:msspectrumDef}
+\end{equation}
+
+If a WSS process $\calX(t)$ is the input of a LTI system
+$
+\calX(t) \arrowedbox{h(t)}  \calY(t),
+$ then $S_y(f)=|H(f)|^2 S_x(f)$.
+In discrete-time: $
+S_y(e^{j \dw}) = |H(e^{j \dw})|^2 S_x(e^{j \dw})$.
+
+The \emph{bilateral} PSD of a white noise is 
+\begin{equation}
+S(f) = \calF \left\{ \frac \no 2 \delta(\tau) \right\} = \frac \no 2, \textrm{~~~} \forall f
+\label{eq:psdWhiteNoise}
+\end{equation}
+and its average power over a bandwidth $\BW$ is $\calP = \no \BW$.
+
+For discrete-time white noise: $S_y(e^{j \dw}) = \sigma_x^2 |H(e^{j \dw})|^2$.
+
+Periodogram is an approximation of $S(f)$ given by
+\begin{equation}
+\hat S[k] \defeq \frac{1}{N \textrm{~} \BW} |\textrm{FFT} \{ x_N[n] \}|^2.
+\label{eq:periodogram_discretetime2}
+\end{equation} 
+\begin{equation}
+\calP \approx \Delta f \sum_{k=0}^{N-1} \hat S[k],
+\label{eq:periodogram_discretetime3}
+\end{equation}
+Relation between MS spectrum and PSD:
+\begin{equation}
+\hat S_{\textrm{ms}}[k] = \calP_k = \Delta f \hat S[k].
+\label{eq:powerPerTone}
+\end{equation}
+\begin{equation}
+\hat S(e^{j \dw}) = \sum_{k=-N+1}^{N-1} \hat R[k] e^{-j \dw n}.
+\label{eq:psd_via_xcorr}
+\end{equation}
+Learn to use Welch's method in Matlab:
+\begin{verbatim}
+[Sx,w]=pwelch(x,window,Num_overlap,N_fft,Fs,
+				   'twosided')
+\end{verbatim}
+and Python
+\begin{verbatim}
+from scipy.signal import welch
+w,Sx=welch(x,window=window,nperseg=len(window),
+        noverlap=Num_overlap,nfft=N_fft,
+				window=window,return_onesided=False)
+\end{verbatim}
+Auto-regressive modeling: find prediction-error FIR filter $A(z)=1+\sum_{i=1}^P a_i z^{-i} = 1-\tilde A(z)$, where $\tilde A(z)=-\sum_{i=1}^P a_i z^{-i}$ provides the predictions
+\begin{equation}
+\tilde y[n] = -\sum_{i=1}^P a_i y[n-i],
+\label{eq:lpcPrediction}
+\end{equation}
+such that $A(z)$ minimizes the power of the prediction error is $x[n] = y[n] - \tilde y[n]$. Having $A(z)$, the estimated PSD is:
+\begin{equation}
+\hat S(e^{j \dw}) = |H(e^{j \dw})|^2 = \frac {g^2} {|A(e^{j \dw})|^2},
+\label{eq:ar_psd}
+\end{equation}
+Short-time Fourier transform (STFT):
+\begin{equation}
+X(\tau,f) = \int_{-\infty}^{\infty} x(t) w(t-\tau) e^{-j 2 \pi f t} \textrm{d}t,
+\label{eq:stft}
+\end{equation}
