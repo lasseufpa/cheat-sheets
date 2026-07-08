@@ -1,0 +1,244 @@
+\def \Nperiod {{N_0}} %period of discrete-time signals, avoid to use N
+\def \Tperiod {{T_0}} %period of continuous-time signals, avoid to use T
+
+%\def \digif {{\mathbb{F}}} %discrete-time linear frequency %AK: I stopped using it
+
+
+%from http://tex.stackexchange.com/questions/42726/align-but-show-one-equation-number-at-the-end
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\def \nuv {{\boldsymbol{\nu}}} %boldface \nu. assumes amsmath package as in  http://tex.stackexchange.com/questions/595/how-can-i-get-bold-math-symbols
+
+\def \cconv {{\circledast}} %\varoast \oast %circular convolution
+
+\newcommand{\figwidth}{.7\textwidth} %defaut fig width
+\newcommand{\figwidthSmall}{.5\textwidth} %smaller fig width
+\newcommand{\figwidthLarge}{.9\textwidth} %larger fig width
+
+\newcommand{{\ip}}[2]{{ \langle {#1} , {#2} \rangle }} %inner product. Usage example: $\ip{\varphi_j(t)}{\varphi_k(t)} = 1$
+
+%This command allows to use \href when compiling with pdflatex or disable it when compiling for a DVI with latex
+%I use it to create a list of URLs, which I will later identify on a web site via urls_akbook.tex
+\newcommand{{\akurl}}[2]{{\ifpdf{[\href{{#1}}{{url#2}}]}\else{\IfPackageLoadedTF{tex4ht}{[\href{{#1}}{{url#2}}]}{[url#2]}}\fi}} %
+
+\def \sign {{\textrm{sign}}} %sign function
+
+\newcommand{\sgn}{\mathop{\mathrm{sgn}}}
+
+\def \aktilde {{$\sim$}} 
+%\def \aktilde {{\textrm{\textasciitilde}}} %this is too high, there is a nice \midtilde in wsuipa package but did not want to include the package
+\def \muV {{$\mu$V}}  %micro volts (1e-6)
+\def \mus {{$\mu$s}}  %micro seconds (1e-6)
+
+%distinguish digital and analog frequencies
+%\def \dw {{\omega}}  %in radians
+%\def \aw {{\Omega}}  %in radians/sec
+\def \aw {{\omega}}  %in radians
+\def \dw {{\Omega}}  %in radians/sec
+
+%############
+
+\def \bModel     {\bthm{Model}}
+\def \eModel     {\ethm{Model}}
+
+%#######################
+%Shortcuts
+%#######################
+\def \xrms {{x_{\textrm{rms}}}} %RMS value of x
+\def \BW {{\textrm{BW}}} %bandwidth
+\def \MSE {{\textrm{MSE}}} %mean-squared error
+\def \SNR {{\textrm{SNR}}} %SNR
+
+\def \dB {{\textrm{dB}}} %decibel
+\def \sp {{\textrm{~}}}
+
+%\newcommand {\arrowedbox}[1] {{\rightarrow\fbox{#1}\rightarrow}}
+\def \setM {{\mathscr M}}
+
+%\real and \imag for real and imaginary parts
+\newcommand{\real}[1]{{\mathcal Real \{#1\}}}
+\newcommand{\imag}[1]{{\mathcal Imag \{#1\}}}
+
+
+%Similarly, discussions on comp.text.tex have revealed that there are a variety of
+%ways to indicate the mathematical notion of "is defined as". Common candidates include:
+%\triangleq), \equiv), \coloneqq) and:
+%\def \define {{{\stackrel{\text{\tiny def}}{=}}}}  %def gets too close of left-side
+%\def \define {{\triangleq}}
+
+\def \cm {{Common mistake}}
+
+\def \tmax {{{\textrm{max}}}}
+\def \tmin {{{\textrm{min}}}}
+
+%random signals
+\def \rsx {{\mathsf x}}
+\def \rsy {{\mathsf y}}
+\def \rsz {{\mathsf z}}
+
+%random variables
+\def \rvn {{\mathsf N}}
+\def \rvr {{\mathsf R}}
+\def \rvk {{\mathsf K}}
+\def \rve {{\mathsf E}}
+\def \rvx {{\mathsf X}}
+\def \rvy {{\mathsf Y}}
+\def \rvz {{\mathsf Z}}
+%\def \rvx {{\mathbb X}}
+%\def \rvy {{\mathbb Y}}
+%\def \rvz {{\mathbb Z}}
+
+\def \conv {{\ast}}  %convolution
+%\def \conv {{\convolution}}  %package mathabx convolution
+
+%moved to definitions.tex
+%use labels starting with eq: and fig: for equations and figures
+%\newcommand{\blol}[1] {{Block~(\ref{eq:#1})}}
+%\renewcommand{\equl}[1] {{Eq.~(\ref{eq:#1})}}
+%\renewcommand{\figl}[1] {{Figure~\ref{fig:#1}}}
+%\newcommand{\tabl}[1] {{Table~\ref{tab:#1}}}
+%use labels starting with ak_ for listings
+%\newcommand{\codl}[1] {{Listing~\ref{code:#1}}}
+%\newcommand{\exal}[1] {{Example~\ref{ex:#1}}}
+
+%expected value:
+\renewcommand{\ev}{\mathbb{E}}
+%\def \expval {\textbf{E}}
+\def \expval {\ev}
+
+%#######################
+%Need to distinguish
+%#######################
+\def \ts {{T_s}}%sampling period
+\def \fs {{F_s}}%sampling frequency
+\def \tsym {{T_{\textrm{sym}}}}%symbol period
+\def \rsym {{R_{\textrm{sym}}}} %symbol rate
+\def \tdmt {{T_{\textrm{dmt}}}}%symbol period
+\def \rdmt {{R_{\textrm{dmt}}}} %symbol rate
+\def \xa {{$x(t)$}} %analog
+\def \xd {{$x_q[n]$}}  %digital
+\def \xs {{$x_s(t)$}} %sampled
+\def \xsarea#1{{{x_s^{\textrm{area}}({{#1}})}}} %area of sampled signal
+
+%#######################
+%Code listing
+%#######################
+%Making easier to include the listing of source code:
+%assume name starts with ak_
+%Example:
+%directory, name
+%\includecode{MatlabOctaveFunctions}{dctmtx}
+%is equivalent to
+%\lstinputlisting[caption={MatlabOctaveFunctions/ak\_dctmtx.m},label=code:dctmtx]{./Code/MatlabOctaveFunctions/ak_dctmtx.m}
+\def \includecode#1#2 {{\lstinputlisting[caption={#1/ak\_#2.m},label=code:#2]{./Code/#1/ak_#2.m}}}
+
+%need to take care of the cases where an underscore _ exists or the cases where ak is not the prefix
+%directory, caption, name
+\def \includecodelong#1#2#3 {{\lstinputlisting[caption={#1/#2.m},label=code:#3]{./Code/#1/#3.m}}}
+%Examples:
+%\includecodelong{MatlabOctaveFunctions}{qpsk\_simple}{qpsk_simple}
+%\includecodelong{MatlabOctaveFunctions}{ak\_gram\_schmidt}{ak_gram_schmidt}
+%In case the macros do not work, use:
+%\lstinputlisting[language=Python,caption=MatlabBookFigures/figs\_transforms\_dctimagecoding,label=code:dctimagecoding]{./Code/MatlabBookFigures/figs_transforms_dctimagecoding.m}
+
+%now add hyperlink to Python version
+\newcommand{{\akpythoncode}}[2]{{\ifpdf{[\href{{#1}}{{#2}}]}\else{\IfPackageLoadedTF{tex4ht}{[\href{{#1}}{{#2}}]}{[#1]}}\fi}} %
+
+\def \includecodepython#1#2#3 {{\lstinputlisting[caption={#1/#2.m. \akpythoncode{https://github.com/aldebaro/dsp-telecom-book-code/blob/master/PythonCodeSnippets/#2.py}{Python version}},label=code:#3]{./Code/#1/#3.m} }}
+
+
+%need to take care of the cases where an underscore _ exists or the cases where ak is not the prefix
+%directory, caption, name
+\def \onlypythoncodelong#1#2#3 {{\lstinputlisting[caption={#1/#2.py},label=code:#3]{./Code/#1/#3.py}}}
+
+
+% #### AK: the label cannot have underscore: _
+%\def \onlypythoncodelonglines#1#2#3#4#5#6 {{\lstinputlisting[caption={Method #6 in lasse-py/lasse/#1/#2.py},label=code:#6,language=Python,firstline=#4,lastline=#5]{../../lasse-py/lasse/#1/#3.py}}}
+\newcommand{\onlypythoncodelonglines}[7]{%
+\lstinputlisting[
+  caption={Method \texttt{#6} in \texttt{lasse-py/lasse/#1/#2.py}},
+  label={code:#7},
+  language=Python,
+  firstline=#4,
+  lastline=#5
+]{../../lasse-py/lasse/#1/#3.py}%
+}
+
+
+%First input argument is the folder and the second is the file name after ak_
+%For instance:
+%\onlypythoncode{PythonFunctions}{convolution}
+%finds the file ./Code/PythonFunctions/ak_convolution.py
+\newcommand{\onlypythoncode}[2]{%
+  \lstinputlisting[
+    caption={#1/ak\_#2.py},
+    label={code:#2},
+    language=Python
+  ]{./Code/#1/ak_#2.py}%
+}
+
+\newcommand{\onlypythonwithlines}[4]{%
+  \lstinputlisting[
+    caption={#1/ak\_#2.py},
+    label={code:#2},
+    language=Python,
+		firstline=#3,
+		lastline=#4
+  ]{./Code/#1/ak_#2.py}%
+}
+
+
+%#######################
+%Others
+%#######################
+
+%three-dimensional array "channel matrix"
+\newcommand{\cmH}{{ \overline {\textbf H}}}
+
+\def \matlab {{{Matlab/Octave}}}
+
+%total and max
+%\def \ptot {{p^{\textrm{tot}}}}
+\def \ptot {{{\calP}^{\textrm{tot}}}}
+
+\def \pmax {{P^{\textrm{max}}}}
+\def \rtarget {{r^{\textrm{target}}}}
+%allow to provide subscript
+\newcommand{\ptotn}[1] {{p_{#1}^{\textrm{tot}}}}
+\newcommand{\pmaxn}[1] {{P_{#1}^{\textrm{max}}}}
+\newcommand{\rtargetn}[1] {{r_{#1}^{\textrm{tar}}}}
+
+\def \grandmatrix {{\overline{\mathbf G}}}
+
+\newcommand{\nk}[1] {{#1_n^k}}
+
+\def \calR {{\cal R}}
+\def \rrb {\overline{\cal R}|}
+\def \txtand {{\textrm{~and~}}}
+\def \snr {{\textrm{SNR}}} %signal to noise ration
+\def \snrdb {{\textrm{SNR}_{\textrm{dB}}}}
+
+%\def \ae {\varepsilon_x}
+\def \ae {{E_c}}
+\def \ab {\overline{b}}
+\def \no { {\cal N}_0 }  %should not it be \N0 with zero
+\def \dfreq {e^{j \omega}}
+
+%margin:
+%\setlength{\parindent}{0em} \setlength{\oddsidemargin}{0cm}
+%\setlength{\evensidemargin}{0cm} \setlength{\textwidth}{16.5cm}
+
+\newcommand{\IR}{\rm I\hspace{-0.06cm}R}
+\newcommand{\IN}{\rm I\hspace{-0.06cm}N}
+
+%\newcommand{\ra}{\;\rightarrow\;}
+\newcommand{\lra}{\;\Leftrightarrow\;}
+\newcommand{\fa}{\;\forall\;}
+\newcommand{\ex}{\;\exists\;}
+
+\newcommand{\sinc}{{\textrm{sinc}}}
+\newcommand{\rect}{{\textrm{rect}}}
+%\def \rect {{\textrm{rect}}} %rect function
+
+\newcommand{\angledeg}[1]{\angle{{#1}}^{\circ}}
+\newcommand{\degree}[1]{{{#1}}^{\circ}}
