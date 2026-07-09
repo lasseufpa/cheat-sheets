@@ -129,24 +129,24 @@ Learn to use Welch's method in Matlab:
 [Sx,w]=pwelch(x,window,Num_overlap,N_fft,Fs,
 				   'twosided')
 \end{verbatim}
-and Python
+and Python:
 \begin{verbatim}
 from scipy.signal import welch
 w,Sx=welch(x,window=window,nperseg=len(window),
         noverlap=Num_overlap,nfft=N_fft,
 				window=window,return_onesided=False)
 \end{verbatim}
-Auto-regressive modeling: find prediction-error FIR filter $A(z)=1+\sum_{i=1}^P a_i z^{-i} = 1-\tilde A(z)$, where $\tilde A(z)=-\sum_{i=1}^P a_i z^{-i}$ provides the predictions
+Auto-regressive modeling: calculate \emph{prediction-error} FIR filter $A(z)=1+\sum_{i=1}^P a_i z^{-i} = 1-\tilde A(z)$, where $\tilde A(z)=-\sum_{i=1}^P a_i z^{-i}$ is the \emph{predictor} filter that estimates
 \begin{equation}
 \tilde y[n] = -\sum_{i=1}^P a_i y[n-i],
 \label{eq:lpcPrediction}
 \end{equation}
-such that $A(z)$ minimizes the power of the prediction error is $x[n] = y[n] - \tilde y[n]$. Having $A(z)$, the estimated PSD is:
+such that $A(z)$ minimizes the power of the \emph{prediction error} $x[n] = y[n] - \tilde y[n]$. Having $A(z)$, the estimated PSD is then:
 \begin{equation}
-\hat S(e^{j \dw}) = |H(e^{j \dw})|^2 = \frac {g^2} {|A(e^{j \dw})|^2},
+\hat S(e^{j \dw}) = |H(e^{j \dw})|^2 = \frac {g^2} {|A(e^{j \dw})|^2}.
 \label{eq:ar_psd}
 \end{equation}
-Short-time Fourier transform (STFT):
+Short-time Fourier transform (STFT) and spectrogram:
 \begin{equation}
 X(\tau,f) = \int_{-\infty}^{\infty} x(t) w(t-\tau) e^{-j 2 \pi f t} \textrm{d}t
 \label{eq:stft}

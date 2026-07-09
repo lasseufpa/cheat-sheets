@@ -162,19 +162,19 @@ Bilinear frequency warping
 \aw_a = \frac{2}{\ts} \tan \left( \frac{\ts \aw_d}{2} \right).
 \label{eq:prewarping2}
 \end{equation}
-To match a frequency:
+To match a frequency using the bilinear transform:
 \begin{equation}
 F'_s =  \frac{\aw_m}{ 2\tan \left(  \frac{\aw_m}{2 \fs} \right) },
 \end{equation}
 
 In FIR design via windowing, ideal lowpass filter impulse response:
 \begin{equation}
-h_{\textrm{LP}}[n] = \frac{\sin(\dw_c n)}{\pi n}
+h_{\textrm{LP}}[n] = \frac{\sin(\dw_c n)}{\pi n} \textrm{~~~~, with~} h_{\textrm{LP}}[0]  = \frac{\dw_c}{\pi}
 \label{eq:idealLowpass}
 \end{equation}
 Impulse response for the ideal highpass filter:
 \begin{equation}
-h_{\textrm{HP}}[n] = \delta[n] - h_{\textrm{LP}}[n].
+h_{\textrm{HP}}[n] = \delta[n] - h_{\textrm{LP}}[n]
 \label{eq:idealHigpass}
 \end{equation}
 
