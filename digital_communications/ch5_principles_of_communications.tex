@@ -1,0 +1,121 @@
+\section*{Chapter 1 -- Signals}
+
+\textbf{Sampling theorem:}
+\[
+F_s > 2 f_{\max}.
+\]
+
+\textbf{Even and odd components:}
+\[
+x_{\mathrm{even}}[n]=\frac{1}{2}\bigl(x[n]+x[-n]\bigr),\qquad
+x_{\mathrm{odd}}[n]=\frac{1}{2}\bigl(x[n]-x[-n]\bigr).
+\]
+
+\textbf{Angular frequency:}
+\[
+\omega = 2\pi f, \qquad \omega = \Omega f_s.
+\]
+
+\textbf{Block processing:}
+when $N$ samples are available, the number $M$ of windows with $L$ samples and a shift of $S$ samples is
+\[
+M=\left\lfloor \frac{N-L}{S}\right\rfloor +1.
+\]
+
+\textbf{Ideal sampling:}
+\[
+x_s(t)=\sum_n x[n]\delta(t-nT_s).
+\]
+
+\textbf{Power and energy:}
+\[
+P_{\mathrm{sinusoid}}=\frac{A^2}{2},\qquad
+E_{\ee^{-at}u(t)}=\frac{1}{2a},\quad a>0.
+\]
+\[
+P=\frac{E}{\Delta t},\qquad
+E=\int_{\langle\Delta t\rangle}p(t)\,dt.
+\]
+\[
+A\cos(\omega t+\phi)\Rightarrow P=\frac{A^2}{2},
+\qquad
+x(t)=k\Rightarrow P=k^2.
+\]
+
+\textbf{SNR:}
+\[
+\mathrm{SNR}_{\mathrm{linear}}=\frac{P_x}{P_n},\qquad
+\mathrm{SNR}_{\mathrm{dB}}=
+10\log_{10}\left(\frac{P_x}{P_n}\right).
+\]
+For uniform quantization noise in the interval
+$[-\Delta/2,\Delta/2]$,
+\[
+P_n=\frac{\Delta^2}{12}.
+\]
+
+\textbf{Autocorrelation:}
+\[
+R(\tau)=\frac{A^2}{2}\cos(\omega\tau),\qquad
+R[i]=\frac{1}{2}\cos(\Omega i).
+\]
+
+Unbiased autocorrelation of a signal $x[n]$ with length $N$:
+\[
+R_x[\ell]=
+\frac{1}{N-|\ell|}
+\sum_n x[n+\ell]x^*[n],
+\quad
+\ell=-(N-1),\ldots,N-1.
+\]
+
+Unnormalized autocorrelation:
+\[
+R_x[\ell]=\sum_n x[n+\ell]x^*[n].
+\]
+
+Unnormalized cross-correlation:
+\[
+R_{xy}[\ell]\triangleq
+\sum_{n=-\infty}^{\infty}x[n+\ell]y^*[n]
+=
+\sum_{n=-\infty}^{\infty}x[n]y^*[n-\ell].
+\]
+
+\textbf{Periodicity:}
+\[
+T=\frac{2\pi}{\omega},\qquad
+\frac{m}{N_0}=\frac{\Omega}{2\pi}.
+\]
+
+\textbf{A/D and D/A modeling:}
+\[
+x(t)\to \mathrm{sampling}\to S/D\to \mathrm{quantization}.
+\]
+
+\[
+x_q[n]\to D/S\bigl(x_{s,q}(t)\bigr)
+\to \mathrm{reconstruction}
+\to x(t).
+\]
+
+\textbf{Useful identities:}
+\[
+\cos(\theta)=\frac{\ee^{\jj\theta}+\ee^{-\jj\theta}}{2},
+\qquad
+\sin(\theta)=\frac{\ee^{\jj\theta}-\ee^{-\jj\theta}}{2\jj},
+\qquad
+\Omega_k=\frac{2\pi k}{N}.
+\]
+
+\[
+\ee^{\jj0}=1,
+\quad
+\ee^{\jj\pi/2}=\jj,
+\quad
+\ee^{\jj\pi}=-1,
+\quad
+\ee^{\jj3\pi/2}=-\jj,
+\quad
+\ee^{\jj2\pi}=1.
+\]
