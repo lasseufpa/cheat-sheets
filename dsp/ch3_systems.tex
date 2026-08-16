@@ -46,7 +46,6 @@ Complex exponentials are eigenfunctions of LTI systems. In continuous-time (also
 \[
 e^{s_0 t} \rightarrow\boxed{\calH}\rightarrow H(s_0) e^{s_0 t}.
 \]
-
 \begin{table}[h]
 \centering
 \caption{Nomenclature of special frequencies in filtering.\label{tab:special_freqs}}
@@ -80,17 +79,15 @@ Group delay in CT (DT is similar):
 \tau_g(\aw) = - \frac{d \Theta}{d \aw}.
 \label{eq:groupDelay}
 \end{equation}
-
-
 If the deviation in passband should be within $[1- D_p, 1]$ (linear scale)
 the ripple in dB to be within $[-R_p, 0]$ is:
-\[
+$
 R_p = -20 \log_{10} (1-D_p).
-\]
+$
 For stopband:
-\[
+$
 R_s = -20 \log_{10} D_s.
-\]
+$
 
 
 Filter frequency scaling of a prototype $H(s)$ with cutoff frequency 1~rad/s:
@@ -125,13 +122,8 @@ Perfect reconstruction of $x[n]$ when $h(t)$ is a sinc:
  x(t) = \textrm{DT/S} \{ x[n] \} \conv h(t) = \sum_{n=-\infty}^\infty x[n] \sinc\left( \frac{t}{\ts}-n \right).
 \label{eq:signalReconstructionViaSincs2}
 \end{equation}
-
 Power relation:
-\begin{equation}
-\calP_s \defeq \frac{\calP_d}{\ts}.
-\label{eq:powerSampledSignal}
-\end{equation}
-
+$\calP_s \defeq \frac{\calP_d}{\ts}$.
 IIR design methods based on $H(s)$:
 a) Matched Z-transform or pole-zero matching: $z_i = e^{s_i \ts}$.
 b) Impulse invariance
@@ -164,7 +156,7 @@ Bilinear frequency warping
 \end{equation}
 To match a frequency using the bilinear transform:
 \begin{equation}
-F'_s =  \frac{\aw_m}{ 2\tan \left(  \frac{\aw_m}{2 \fs} \right) },
+F'_s =  \frac{\aw_m}{ 2\tan \left(  \frac{\aw_m}{2 \fs} \right) }
 \end{equation}
 
 In FIR design via windowing, ideal lowpass filter impulse response:
