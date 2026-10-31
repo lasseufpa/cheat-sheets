@@ -1,0 +1,243 @@
+\section*{Basic Definitions}
+
+\paragraph{Tail probability of a non-normalized Gaussian (mean $\mu$, variance $\sigma^2$)}
+\[
+P(\rvr > x) = Q\left( \frac{x - \mu}{\sigma}\right)
+\]
+
+\paragraph{Symbol error probability (SER)}
+\[
+P_e = \sum_{m \in \calM} P(e,m)
+\]
+\begin{equation}
+P_e = \sum_{m \in \calM} P(e,m) = \sum_{m \in \calM} P(m) P(e|m)
+\label{eq:pe}
+\end{equation}
+\[
+P_e = 1 - P_c = 1 - \sum_{m \in \calM} P(m) P(c|m)
+\]
+
+\section*{Detection Rules}
+
+\paragraph{Maximum likelihood (ML)}
+\[
+\hat m_{\textrm{ML}} = \arg \max_{m_i} p(r|m_i)
+\]
+
+\paragraph{Maximum a posteriori (MAP)}
+\begin{equation}
+\hat m_{\textrm{MAP}} = \arg \max_{m_i} p(m_i|r)
+\label{eq:map0}
+\end{equation}
+\begin{equation*}
+p(m_i|r) = \frac{p(r|m_i)p(m_i)}{p(r)} = \frac{p(r|m_i)p(m_i)}{\sum_{j=1}^M p(m_j)p(r|m_j)}
+\label{eq:bayestheorem}
+\end{equation*}
+\begin{equation}
+\hat m_{\textrm{MAP}} = \arg \max_{m_i} p(r|m_i)p(m_i)
+\label{eq:map}
+\end{equation}
+
+\paragraph{Decision threshold between two Gaussians}
+\begin{align*}
+p(m_1) \frac{1}{\sqrt{2 \pi} \sigma_1} e^{- \frac{(r-\mu_1)^2}{2 \sigma_1^2} } &= p(m_2) \frac{1}{\sqrt{2 \pi} \sigma_2} e^{- \frac{(r-\mu_2)^2}{2 \sigma_2^2} } \\
+\ln \left( \frac{p(m_1) \sigma_2}{p(m_2) \sigma_1} \right)&=\frac{(r-\mu_1)^2}{2 \sigma_1^2}  -\frac{(r-\mu_2)^2}{2 \sigma_2^2}
+\end{align*}
+
+\section*{PAM}
+
+\paragraph{SER for $M$-PAM}
+\begin{align}
+P_e &= P(e) = \sum_{m \in \calM} P(m,e) = \sum_{m \in \calM} P(m) P(e|m) \\
+&= \frac{M-2}{M} 2 Q \left(\frac{d}{2\sigma} \right) + \frac{2}{M}  Q\left( \frac{d}{2\sigma} \right) \\
+&= 2 \left(1 - \frac{1}{M} \right) Q\left( \frac{d}{2\sigma} \right),
+\label{eq:pam_pe_general}
+\end{align}
+
+\paragraph{Normalized matched-filter SNR and minimum distance}
+\begin{equation}
+\snr_{\textrm{nMF}} = \frac{E_c}{\sigma^2}
+\label{eq:snrnormalizedMF}
+\end{equation}
+\begin{equation}
+d = \sqrt{ \frac{12 E_c}{M^2 - 1} }
+\label{eq:d_pam}
+\end{equation}
+\begin{equation}
+\frac{d}{2 \sigma} = \sqrt{\frac{3}{M^2-1} \snr_{\textrm{nMF}}}
+\label{eq:pamdistanceoversigma}
+\end{equation}
+
+\paragraph{SER for $M$-PAM in terms of SNR}
+\begin{align}
+	P_e  &= 2 \left(1 - \frac 1 M\right) Q \left( \frac{d}{2 \sigma} \right) \label{eq:pam_pe_snr} \\
+	&=  2 \left(1 - \frac 1 M\right) Q \left( \sqrt{\frac{3}{M^2-1} \snr_{\textrm{nMF}}} \right)
+\end{align}
+
+\paragraph{Large-$M$ approximation}
+\[
+P_e \approx 2 Q \left( \frac{d}{2 \sigma} \right)
+\]
+
+\section*{Union Bound}
+$$P_e \le (M-1) Q\left( \frac {d_{\textrm{min}}} {2\sigma} \right),$$
+$$d_{\textrm{min}} = \min_{i \ne j} ||m_i - m_j||, \forall i,j$$
+
+\section*{Square (SQ) QAM}
+
+\paragraph{Constellation energy}
+\[
+E_c = \frac{d^2 (M-1)}{6}
+\]
+\[
+\overline{E_c} = \frac{d^2 (\sqrt{M}^2-1)}{12} = \frac{d^2 (M-1)}{12}
+\]
+
+\paragraph{Per-dimension quantities}
+\[
+\overline{P_e} = P_e / N
+\]
+\[
+\overline{b} = b/N
+\]
+
+\paragraph{SER for SQ $M$-QAM}
+\begin{align*}
+P_e &= 4 \left(1 - \frac 1 {\sqrt{M}} \right) Q \left( \frac{d}{2 \sigma} \right) -	4 \left(1 - \frac 1 {\sqrt{M}}\right)^2 \left( Q \left( \frac{d}{2 \sigma} \right) \right) ^2	\\
+    &=  4 \left(1 - \frac 1 {\sqrt{M}} \right) Q \left( \sqrt{\frac{3 \snr}{M-1}} \right) -	4 \left(1 - \frac 1 {\sqrt{M}}\right)^2 Q \left( \sqrt{\frac{3 \snr}{M-1}} \right)^2
+	\label{eq:qam_pe}
+\end{align*}
+
+\paragraph{Approximations (discarding the $Q(\cdot)^2$ term)}
+\begin{equation}
+	\overline{P}_e \le 2 \left(1 - \frac 1 { 2^{\overline{b}} } \right)	Q \left( \frac{d}{2 \sigma} \right)
+	 = 2 \left(1 - \frac 1 {2^{\overline{b}}}\right) Q \left( \sqrt{\frac{3}{M-1}SNR} \right)
+	\label{eq:qam_pe_approx}
+\end{equation}
+\begin{equation}
+	\overline{P}_e^{QAM} \approx P_e^{PAM} = 2 \left(1 - \frac 1 { 2^{\overline{b}} } \right)	Q \left( \frac{d}{2 \sigma} \right)
+	\label{eq:prob_errors}
+\end{equation}
+
+\section*{Cross (CR) QAM ($b$ odd, $D=2$)}
+$$\ae = 2\overline{\ae} = \frac{d^2}{6} \left( \frac {31} {32} M -1 \right)$$
+$$\overline{b} = \frac 1 2 \log_2 \left(\frac {32} {31} \left(12 \frac{\overline{\ae}}{d^2}+1 \right) \right)$$
+$$\overline{P_e} \le 2 \left(1 - \frac 1 { 2^{\overline{b}+0.5} } \right)	Q \left( \frac{d}{2 \sigma} \right)
+	 = 2 \left(1 - \frac 1 {2^{\overline{b}+0.5}}\right) Q \left( \sqrt{\frac{3}{\frac {31} {32} (M-1)}SNR} \right)$$
+
+\section*{PSK}
+
+\paragraph{Upper bound on SER (for $M>4$)}
+\[
+P_e < 2 Q\left( \frac{\sqrt{E_c} \sin(\pi/M)}{\sigma}  \right)
+\]
+
+\section*{SNR, $E_b/N_0$ and Bit Error Rate}
+
+\paragraph{Relation between SNR and $E_b/N_0$}
+\[
+\snr = \frac{P_s}{P_n} = \frac{E_s/\tsym}{2 \, \BW \, \frac \no 2} = \frac{E_b \, b \, \rsym}{\BW \no} = \frac{E_b}{\no} \, \frac{R}{\BW}
+\]
+\begin{equation}
+\frac{E_b}{\no} = \snr \frac{\BW}{R}
+\label{eq:ebn0}
+\end{equation}
+\begin{equation}
+\frac{E_b}{\no} = \snr \frac{\BW}{R} = \snr \frac{\fs/2}{\fs b} = \frac{\snr}{2 b}
+\label{eq:ebn0_snr}
+\end{equation}
+
+\paragraph{Binary polar PAM}
+\[
+P_e = Q \left( \frac{d}{2 \sigma} \right) = Q \left( \sqrt{ \snr } \right) = Q \left( \sqrt{\frac{2 E_b}{\no}} \right)
+\]
+
+\paragraph{Energy per bit (discrete time) and noise variance}
+\[
+E_b = \frac{E_t}{N_b} = \frac{\ts \sum_{n=0}^{S-1}{x^2[n]}}{R \, S \, \ts} = \frac{E_d}{R \, S} = \frac{P_c}{R}
+\]
+\[
+\sigma^2 = 2 \frac{\no}{2} \BW = \frac{\no \fs}{2}
+\]
+
+\paragraph{BER approximations (Gray coding)}
+\[
+P_b^{\textrm{QAM}} \approx \frac{4}{b} \left(1-\frac{1}{\sqrt{M}} \right) Q\left(\sqrt{\frac{3 b \, E_b / \no}{M-1}} \right)
+\]
+\[
+P_b^{\textrm{PSK}} \approx \frac{2}{b} Q\left(\sqrt{\frac{2 b \, E_b}{\no}} \sin \left( \frac{\pi}{M}\right) \right)
+\]
+
+\section*{Spectral Efficiency and Bits per Symbol}
+
+\paragraph{Maximum spectral efficiency of QAM}
+\begin{equation}
+ \eta_{\textrm{max}}^{\textrm{QAM}} = \frac {\rsym \, b} {\BW} =  b
+ \label{eq:qam_max_efficiency}
+\end{equation}
+
+\paragraph{Bits per symbol for PAM}
+\begin{equation}
+b = \log_2 M = \log_2 \left( \sqrt{ 12 \frac{E_c}{d^2}+1 } \right) = \frac 1 2 \log_2 \left(  12 \frac{\snr \sigma^2}{d^2}+1  \right)
+\label{eq:pambits}
+\end{equation}
+\[
+b \approx \frac 1 2 \log_2 \left(  12 \frac{\snr \sigma^2}{d^2} \right) =
+\frac 1 2 \log_2 \left(  \snr \right) + \textrm{cte.} = \frac 1 2 \log_2 \left(  10^{0.1\snrdb} \right) + \textrm{cte.}
+\]
+\[
+\overline b = \frac 1 2 \log_2 \left(  \frac{12 \overline{E_c} }{d^2}+1  \right)
+\]
+
+\section*{SNR Gap Approximation}
+
+\paragraph{Bits per dimension and capacity per dimension}
+\begin{equation}
+\overline{b} = \frac 1 2 \log_2 \left(1 + \frac{\snr}{\Gamma} \right)
+\label{eq:gap_both_pam_qam}
+\end{equation}
+\[
+\overline{c} = \frac 1 2 \log_2 \left(1 + \snr \right)
+\]
+
+\paragraph{PAM}
+$$P_e = 2 \left(1 - \frac 1 M\right) Q \left( \sqrt{\frac{3}{M^2-1} \snr}  \right)$$
+\begin{equation}
+{P}_e \approx \hat P_e = 2 Q \left( \sqrt{\frac{3}{M^2-1}\snr}  \right)
+\label{eq:pe_pam_gap}
+\end{equation}
+$$Q^{-1} \left( \frac {{P}_e}  2 \right) \approx \sqrt{\frac{3}{M^2-1}\snr} $$
+$$M = 2^{{b}} \approx \sqrt{ 1 + \frac {3} {\left[ Q^{-1} \left( \frac {{P}_e}  2 \right) \right]^2} \snr}$$
+\begin{equation}
+\Gamma_{\textrm{PAM}} = \frac 1 3 \left[ Q^{-1} \left( \frac {{P}_e}  2 \right) \right]^2
+\label{eq:gap_pam}
+\end{equation}
+
+\paragraph{SQ QAM}
+\begin{equation}
+\begin{split}
+P_e = {} & 4 \left( 1 - \frac 1 {\sqrt{M}} \right) Q \left( \sqrt{\frac{3}{M-1} \snr} \right) \\
+         & - 4 \left(1 - \frac 1 {\sqrt{M}} \right)^2 Q \left( \sqrt{\frac{3}{M-1} \snr} \right)^2
+\end{split}
+\label{eq:pe_qam}
+\end{equation}
+\begin{equation}
+P_e \approx 4  Q \left( \sqrt{\frac{3}{M-1}\snr}  \right)
+\label{eq:pe_qam_gap}
+\end{equation}
+$$
+M = 1 + \frac{3 \snr}{[Q^{-1}(P_e/4)]^2}
+$$
+$$
+b = \log_2 \left(1 + \frac{\snr}{\Gamma} \right)
+$$
+\begin{equation}
+\Gamma_{\textrm{QAM}} = \frac{1}{3} \left[ Q^{-1} \left( \frac {{P}_e}  4 \right) \right]^2
+\label{eq:gap_qam}
+\end{equation}
+
+\paragraph{Gap in dB}
+\[
+10 \log_{10} \left( \frac{\snr}{\Gamma} \right) = \snrdb - \Gamma_\dB
+\]
+

@@ -1,0 +1,213 @@
+\section*{Rates and Symbols}
+
+\paragraph{Bit rate, symbol rate and bits per symbol}
+\[R=\rsym b,\]
+\[b=\log_2 M\]
+\begin{equation}
+L = \frac{\tsym}{\ts}
+\label{eq:oversampling_factor}
+\end{equation}
+(with $L$ the oversampling factor and $\rsym = 1/\tsym$.)
+
+\section*{Error Probabilities and Error Metrics}
+
+\paragraph{BER versus SER}
+\begin{equation}
+P_b \le P_e
+\label{eq:pbBound}
+\end{equation}
+\begin{equation}
+P_b = \frac{P_e}{b} \quad \text{(Gray code)}
+\label{eq:gray_error_prob}
+\end{equation}
+\begin{equation}
+\frac{P_e}{b} \le P_b \le P_e
+\label{eq:pbTwoBounds}
+\end{equation}
+\[
+P_b = \frac{1}{b} \sum_{\vphantom{j}i=1}^M \sum_{j, j \ne i} p(i) P_e(j|i) n_b(i,j)
+\]
+
+\paragraph{MER and EVM}
+\begin{equation}
+\textrm{MER}_{[\textrm{dB}]}  \defeq 10 \log_{10} \left(\frac{\calP_s}{\calP_e}\right)
+\label{eq:mer}
+\end{equation}
+\begin{equation}
+\textrm{EVM}  \defeq \sqrt{\frac{\calP_e}{\calP_s}}
+\label{eq:evm}
+\end{equation}
+\begin{equation}
+\textrm{MER}  = \frac{1}{\textrm{EVM}^2}
+\label{eq:mer_and_evm}
+\end{equation}
+
+\section*{PAM Constellation}
+
+\paragraph{Constellation energy}
+\begin{equation}
+\overline E_c \triangleq \ev [ |m_i|^2 ]
+\label{eq:pam_energy_contellation}
+\end{equation}
+\begin{equation}
+\overline E_c = \frac{d^2 (M^2 - 1)}{12}
+\label{eq:pamConstellationEnergy}
+\end{equation}
+(with $d$ the distance between adjacent symbols.)
+
+\section*{PAM Signal Generation}
+
+\paragraph{Single symbol}
+\begin{equation}
+s_i(t) = m_i \textrm{~} p(t)
+\textrm{~~~~~~~~~~or~~~~~~~~~~~}
+s_i[n] = m_i \textrm{~} p[n]
+\label{eq:onepamsymbol}
+\end{equation}
+
+\paragraph{PAM signal (continuous and discrete time)}
+\begin{equation}
+s(t) = \sum_{i=-\infty}^{\infty} m[i] p(t-i \tsym)
+\label{eq:pam}
+\end{equation}
+\begin{equation}
+s[n] = \sum_{i=-\infty}^{\infty} m[i] p[n- i L]
+\label{eq:pam_discrete_time}
+\end{equation}
+
+\paragraph{Linearity}
+\begin{equation}
+s(t) = \sum_{n=-\infty}^{\infty} (\alpha m_1[n] + \beta m_2[n]) p(t-n \tsym) = \alpha s_1(t) + \beta s_2(t)
+\label{eq:pam_linearity}
+\end{equation}
+
+\section*{PAM Power}
+
+\paragraph{Discrete time}
+\begin{equation}
+\calP_u = \frac{\overline E_c}{L}
+\label{eq:powerUpsampledSignal}
+\end{equation}
+\begin{equation}
+\calP_s = \frac{\overline E_c}{L} E_p
+\label{eq:pamPowerDiscreteTime}
+\end{equation}
+
+\paragraph{Continuous time}
+\begin{equation}
+\calP_u = \frac{\overline E_c}{\tsym}
+\label{eq:powerUpsampledSignalContinuousTime}
+\end{equation}
+\begin{equation}
+\calP_s = \frac{\overline E_c}{\tsym} E_p
+\label{eq:pamPowerContinuousTime}
+\end{equation}
+(with $E_p$ the pulse energy.)
+
+\section*{Quadrature and Differential Encoding}
+
+\paragraph{QAM}
+\[
+s_{\textrm{QAM}}(t) = s_i(t) \cos(\aw_c t) + s_q(t) \sin(\aw_c t)
+\]
+
+\paragraph{Differential encoding and decoding}
+\begin{equation}
+d[n] = b[n] \oplus d[n-1]
+\label{eq:differential_encoding}
+\end{equation}
+\begin{equation}
+\hat b[n] = \hat d[n] \oplus \hat d[n-1]
+\label{eq:differential_decoding}
+\end{equation}
+
+\section*{Power Spectral Density of Line Codes}
+
+\paragraph{General PSD of linearly modulated signals}
+\begin{equation}
+S_s(f) = |P(f)|^2 S_q(f) = \frac{1}{\tsym} |P(f)|^2 \sum_{l=-\infty}^{\infty} R_m[l] e^{-j 2 \pi f l \tsym}
+\label{eq:psd_linecodes}
+\end{equation}
+
+\paragraph{Uncorrelated symbols, $R_m[l]=0$ for $l \ne 0$}
+\begin{equation}
+S_s(f) = \frac{1}{\tsym} |P(f)|^2 E_c
+\label{eq:psd_uncorrelatedLinecodeRepeated}
+\end{equation}
+
+\paragraph{PAM PSD (continuous and discrete time)}
+\begin{equation}
+S(f) = \frac{\overline E_c}{\tsym} |P(f)|^2
+\label{eq:psdPAM}
+\end{equation}
+\begin{equation}
+S(e^{j \dw}) = \frac{\overline E_c}{L}  |P(e^{j \dw})|^2
+\end{equation}
+
+\paragraph{Polar NRZ (pulse amplitude $A$, symbols $\pm B$)}
+\begin{equation}
+S_s(f) = \frac{|P(f)|^2}{\tsym} \sum_{l=-\infty}^{\infty} R_m[l] e^{-j 2 \pi f l \tsym} = \frac{|P(f)|^2}{\tsym} R_m[0] e^{0} = A^2 B^2 \tsym \sinc^2(f \tsym)
+\label{eq:polarPSD}
+\end{equation}
+
+\paragraph{Unipolar NRZ (symbols $0, B$)}
+\begin{align}
+\sum_{l=-\infty}^{\infty} R_m[l] e^{-j 2 \pi f l \tsym} &= \frac{B^2}{2} + \sum^{\infty}_{l=-\infty,l \ne 0} \frac{B^2}{4} e^{-j 2 \pi f l \tsym} \nonumber \\
+&= \frac{B^2}{4} \left( 1 + \sum^{\infty}_{l=-\infty} e^{-j 2 \pi f l \tsym} \right) \nonumber \\
+&= \frac{B^2}{4} \left( 1 + \frac{1}{\tsym} \sum^{\infty}_{k=-\infty} \delta \left( f - \frac{k}{\tsym} \right) \right)
+\label{eq:unipolarPSDParcel}
+\end{align}
+\[
+S_s(f) =  \frac{A^2 B^2} 4 \delta(f) + \frac{A^2 B^2 \tsym} 4 \sinc^2(f \tsym)
+\]
+
+\paragraph{Unipolar RZ (duty cycle $1/M$)}
+\begin{equation}
+S_s(f) = \frac{A^2 B^2 \tsym}{4 M^2} \sinc^2 \left(\frac{f \tsym}{M} \right) \left[ 1 + \frac{1}{\tsym} \sum^{\infty}_{k=-\infty} \delta \left(f - \frac{k}{\tsym} \right) \right]
+\label{eq:rzUnipolarPSD}
+\end{equation}
+
+\section*{Signal Space Representation}
+
+\paragraph{Linear combination of basis functions}
+\begin{equation}
+s_n(t) = \sum_{j=1}^D m_j[n] \varphi_j(t)
+\label{eq:signalComposedByLinearCombination}
+\end{equation}
+\begin{equation}
+s(t) = \sum_{n=-\infty}^{\infty} s_n(t) = \sum_{n=-\infty}^{\infty} \sum_{j=1}^D m_j[n] \varphi_j(t - n \tsym)
+\label{eq:totalSignalComposedByLinearCombination}
+\end{equation}
+
+\paragraph{PAM as the one-dimensional case}
+\begin{equation}
+s(t) = \sum_{n=-\infty}^{\infty} m[n] p(t-n \tsym)
+\label{eq:pamEquation2}
+\end{equation}
+
+\paragraph{Inner product preservation}
+\[
+\left< \bm_1, \bm_2 \right> = \left< s_1(t), s_2(t) \right>
+\]
+
+\paragraph{Correlative decoder}
+\begin{equation}
+m_j = \left< s(\tau), \varphi_j(\tau) \right> = \int_{<\tsym>} s(\tau) \varphi_j(\tau) d\tau
+\label{eq:correlativeDecoder}
+\end{equation}
+
+\section*{Matched Filter / Correlator Receiver}
+
+\begin{equation}
+\langle r(t),p(t) \rangle = m || p(t) ||^2 = m
+\label{eq:mfParcelOfInterest}
+\end{equation}
+\begin{equation}
+\langle r(t),p(t)\rangle  = \langle m p(t),p(t)\rangle  + \langle \nu(t),p(t) \rangle  = || p(t) ||^2 m + \rvn = m + \rvn
+\label{eq:mfNoisySignal}
+\end{equation}
+\begin{equation}
+\snr = \frac{\overline E_c}{\no/2}
+\end{equation}
+(where $\rvn$ has variance $\sigma^2 = \no/2$ and $\|p(t)\|^2 = 1$.)
+

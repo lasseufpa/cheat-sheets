@@ -1,0 +1,575 @@
+
+\section*{Channel Models}
+
+\paragraph{Filtered AWGN channel}
+\begin{equation}
+r(t) = s(t) \conv h_c(t) + \nu(t)
+\label{eq:filtered_awgn_channel}
+\end{equation}
+
+\paragraph{Flat fading output}
+\begin{equation}
+g(t) = \kappa e^{j \phi} s(t-t_0)
+\label{eq:flatFadingOutput}
+\end{equation}
+
+\paragraph{AWGN power}
+\begin{equation}
+\ev\{|\br|^2\}= \ev\{|\bs|^2\}+\ev\{|\nuv|^2\}
+\label{eq:awgn_power}
+\end{equation}
+
+\section*{Matched Filter}
+
+\paragraph{Matched filter impulse and frequency response}
+\begin{equation}
+h_{\textrm{Rx}}(t)=p^*(\tsym-t)
+\label{eq:matchedFilter}
+\end{equation}
+\begin{equation}
+H_{\textrm{Rx}}(f)=P^*(f)e^{-j2\pi f \tsym}
+\end{equation}
+
+\paragraph{Convolution and correlation give the same result}
+\begin{equation}
+\left\{ r(t) \conv h_{\textrm{Rx}}(t) \right\} |_{t=\tsym} = \langle p(t),p(t)\rangle
+\label{eq:convCorrGiveSameResult}
+\end{equation}
+
+\paragraph{Sampled matched filter output}
+\[
+y[n] = \left\{ r(t) \conv h_{\textrm{Rx}}(t) \right\} |_{t=n \tsym}
+\]
+
+\paragraph{Scaled transmit pulse and receive filter}
+\[
+p_{\textrm{Tx}}(t) = \sqrt{E_{\textrm{Tx}}} \textrm{~} p(t)
+\]
+\[
+h_{\textrm{Rx}}(t) = \sqrt{E_{\textrm{Rx}}} \textrm{~} p^*(\tsym - t)
+\]
+\begin{equation}
+y[n]=\langle r(t), \sqrt{E_{\textrm{Rx}}} \textrm{~} p(t) \rangle =
+ \sqrt{E_{\textrm{Rx}}} \sqrt{E_{\textrm{Tx}}} m + \sqrt{E_{\textrm{Rx}}} \langle \nu(t), p(t) \rangle
+\end{equation}
+
+\paragraph{Signal power, noise power and SNR at the matched filter output}
+\begin{equation}
+\ev[|\sqrt{E_{\textrm{Rx}}} \sqrt{E_{\textrm{Tx}}} m|^2] = E_{\textrm{Tx}} E_{\textrm{Rx}} \overline E_c
+\label{eq:mfOutputSignalOfInterest}
+\end{equation}
+\begin{equation}
+\sigma^2 = E_{\textrm{Rx}} \frac{\no}{2}
+\label{eq:mfOutputNoiseParcel}
+\end{equation}
+\begin{equation}
+\snr_{\textrm{MF}} = \frac{E_{\textrm{Tx}} \overline E_c}{\no/2}
+\label{eq:matchedFilterSNR}
+\end{equation}
+
+\section*{White Noise in a Signal Space}
+
+\paragraph{Noise as a linear combination of basis functions}
+\begin{equation}
+\nu_r(t) = \sum_{i=1}^D \rvn_i \varphi_i(t)
+\label{eq:wgnComposedByLinearCombination}
+\end{equation}
+
+\paragraph{Zero mean}
+\begin{equation}
+\ev[\rvn_i]=\ev[\langle \nu(t), \varphi_i(t) \rangle] = \ev \left[ \int_{-\infty}^{\infty} \nu(t)\varphi_i(t) dt \right]=\int_{-\infty}^{\infty} \ev[\nu(t)]\varphi_i(t) dt=0, \textrm{~~}\forall i
+\label{eq:wgnMeanIsZero}
+\end{equation}
+
+\paragraph{Uncorrelated components (result)}
+\[
+\ev[\rvn_i \rvn_j] = \frac{\no}{2} \delta[i-j]
+\]
+
+\paragraph{Variance for basis functions of energy $E_{\varphi}$}
+\begin{equation}
+\ev[\rvn_i^2] = E_{\varphi} \frac{\no}{2}
+\label{eq:filteredAWGNNotUnitaryEnergy}
+\end{equation}
+
+\paragraph{Noise power in the vector space}
+\[
+\ev[\rvy^2] = \sigma^2 E_a
+\]
+
+\section*{Discrete-Time Matched Filter and Correlator}
+
+\paragraph{Discrete-time matched filter}
+\[
+h_{\textrm{Rx}}[n]=p^*[L-n]
+\]
+
+\paragraph{Input SNR and SNR after the matched filter}
+\[
+\snr_{\textrm{in}} = \frac{\overline{E}_c E_{\textrm{Tx}}}{L \sigma^2}
+\]
+\[
+\snr_{\textrm{MF}} = \frac{\overline E_c E_{\textrm{Tx}}}{\sigma^2}
+\]
+\[
+\snr_{\textrm{MF}} = \frac{\ev[ m^2 E_p^2]}{\ev[\langle\bn,\bp \rangle ^2]} = \frac{E_p^2 \overline E_c}{\sigma^2 E_p} = L \textrm{~} \snr_{\textrm{in}}
+\]
+
+\paragraph{Decision variable}
+\[\rvr = m + \tilde \rvn\]
+\[y[n]=\sum_{k=-\infty}^\infty r[k] h_{\textrm{Rx}}[n-k] = \sum_{k=0}^{L-1} r[k] h_{\textrm{Rx}}[n-k]\]
+\begin{equation}
+y[L]= \sum_{k=0}^{L-1} r[k] h_{\textrm{Rx}}[L-k]
+\label{eq:mfout}
+\end{equation}
+\[
+y[L]= \langle r[k],a[k]\rangle
+\]
+\begin{equation}
+\rvy = m\langle\bp,\bp \rangle  + \langle\bn,\bp \rangle  = m E_p + \langle\bn,\bp \rangle
+\label{eq:mfout2}
+\end{equation}
+
+\paragraph{General correlator with template $\ba$}
+\begin{equation}
+\langle\br,\ba \rangle  = \langle m \bp + \bn, \ba \rangle  = m\langle\bp,\ba \rangle  + \langle\bn,\ba \rangle
+\label{eq:mfparcels}
+\end{equation}
+\[
+\snr_{\textrm{MF}} = \frac{\overline E_c \langle\bp,\ba \rangle ^2}{\sigma^2 E_a} = \frac{\overline E_c\langle\bp,\frac{\ba}{\sqrt{E_a}} \rangle ^2}{\sigma^2} =
+\frac{\overline E_c\langle\bp,\overline \ba \rangle ^2}{\sigma^2}
+\]
+
+\section*{Intersymbol Interference (ISI) and Nyquist Criterion}
+
+\paragraph{Overall pulse and pulse energy}
+\begin{equation}
+p(t) = p_t(t) \conv h_c(t)
+\label{eq:overallPulse}
+\end{equation}
+\begin{equation}
+p(t) = p_t(t) \conv p_r(t)
+\label{eq:pulseWithEqualizedChannel}
+\end{equation}
+\begin{equation}
+E_p = ||p(t)||^2 = \left< p(t),p(t) \right> = \int_{-\infty}^{\infty} p(t)p^*(t) dt
+\end{equation}
+
+\paragraph{Received signal and ISI}
+\[
+y(t) = \sum_{n=-\infty}^{\infty} m[n] p(t-n \tsym)
+\]
+\[
+y(n_0 \tsym) = \sum_{n=-\infty}^{\infty} m[n] p(n_0 \tsym -n \tsym)
+\]
+\begin{equation}
+\textrm{ISI}{(n_0)} = \sum_{n \ne n_0} m[n] p(n_0 \tsym -n \tsym)
+\label{eq:isi_pam}
+\end{equation}
+\[
+y(n_0 \tsym) = m[n_0]p(0) + \textrm{ISI}{(n_0)}
+\]
+
+\paragraph{Nyquist pulses (zero ISI)}
+\begin{equation}
+p(n \tsym) = \left\{ \begin{array}{l} 1,~n = 0 \\ 0,~n \ne 0 \end{array} \right.
+\label{eq:nyquistPulses}
+\end{equation}
+\[
+p[n L] = \left\{ \begin{array}{l} 1,~n = 0 \\ 0,~n \ne 0 \end{array} \right.
+\]
+\[
+p[n L + N_0] = \left\{ \begin{array}{l} 1,~n = 0 \\ 0,~n \ne 0 \end{array} \right.
+\]
+
+\paragraph{Nyquist criterion in frequency}
+\[
+p_s(t) = \sum_{n=-\infty}^{\infty} p(t) \delta(t-n \tsym)
+\]
+\begin{equation}
+P_s(f) = \frac{1}{\tsym} \sum_{k=-\infty}^{\infty} P \left( f - k \frac{1}{\tsym} \right)
+\label{eq:nyquistCondition}
+\end{equation}
+\[
+X(e^{j\dw})=\frac{2 \pi}{L}  \sum_{k=-\infty}^{\infty} \delta\left(\dw+k \frac{2 \pi}{L}\right)
+\]
+\begin{equation}
+P_s(e^{j\dw})=  P(e^{j\dw}) \conv X(e^{j\dw}) = \frac{2 \pi}{L}  \sum_{k=0}^{L-1} P(e^{j(\dw+k \frac{2 \pi}{L})})
+\label{eq:nyq_criterion}
+\end{equation}
+
+\paragraph{Maximum symbol rate without ISI}
+\begin{equation}
+\rsym \le 2 \BW \quad \text{(real passband signals)}
+\label{eq:nyquistZeroISI}
+\end{equation}
+\begin{equation}
+\rsym \le \BW \quad \text{(complex envelope / complex signals)}
+\label{eq:nyquistZeroISIComplexEnvelope}
+\end{equation}
+
+\section*{Raised Cosine and Square-Root Raised Cosine}
+
+\paragraph{Raised cosine pulse (roll-off $r$)}
+\begin{equation}
+p(t) = \sinc \left( \frac{t}{\tsym} \right) \left[ \frac{\cos \left( \frac{r \pi t}{\tsym} \right) }{1 - \left( \frac{2 r t}{\tsym} \right)^2} \right]
+\label{eq:raisedCosine}
+\end{equation}
+\begin{equation}
+p[n] = \sinc \left( \frac{n}{L} \right) \left[ \frac{\cos \left( \frac{r \pi n}{L} \right) }{1 - \left( \frac{2 r n}{L} \right)^2} \right]
+\label{eq:raisedCosineDiscreteTime}
+\end{equation}
+
+\paragraph{Raised cosine spectrum}
+\begin{equation}
+P(\aw) = \left\{ {
+\begin{array}{cl}
+{\tsym,} & {\lvert\aw\rvert \le \frac{\pi}{\tsym}(1-r)} \\
+{\frac{\tsym}{2}\left[1 - \sin(\frac{\tsym}{2r}(\lvert\aw\rvert-\frac{\pi}{\tsym})) \right]}, & {\frac{\pi}{\tsym}(1-r) \le \lvert\aw\rvert \text{ and}}\\
+& {\lvert\aw\rvert\le \frac{\pi}{\tsym}(1+r)} \\
+{0,} & {\frac{\pi}{\tsym}(1+r) \le \lvert\aw\rvert} \\
+\end{array}
+} \right.
+\label{eq:raisedCosineSpectrum}
+\end{equation}
+
+\paragraph{Roll-off and bandwidth}
+\[r=(\BW-\BW_{\textrm{min}})/\BW_{\textrm{min}},\]
+\[
+\BW=\BW_{\textrm{min}} (1+r)
+\]
+\[\BW=\frac{\rsym}{2} (1+r)~~~~~~\textrm{(in Hz)},\]
+\[
+\BW= \frac{\pi}{L} (1+r) ~~~~~~\textrm{(in rad)},
+\]
+
+\paragraph{Square-root raised cosine (SRRC)}
+\begin{equation}
+p(t) = p_{\textrm{sr}}(t) \conv p_{\textrm{sr}}^*(-t)
+\label{eq:timeDomainSquareRootRaisedCosine}
+\end{equation}
+\begin{equation}
+P_{\textrm{sr}}(f) = P^{1/2}(f)
+\label{eq:squareRootRaisedCosine}
+\end{equation}
+\begin{equation}
+p_{\textrm{sr}}(t) = \frac{ \sin \left( (1-r) \frac{\pi t}{\tsym} \right) +
+\frac{4 r t}{\tsym} \cos \left( (1+r) \frac{\pi t}{\tsym} \right) }
+{ \frac{\pi t}{\tsym}  \left[ 1 - \left( \frac{4 r t}{\tsym} \right)^2 \right] }
+\label{eq:sqrtRC}
+\end{equation}
+\[
+p_{\textrm{sr}}(t)|_{t=0} = 1 - r + \frac{4r}{\pi}
+\]
+\[
+p_{\textrm{sr}}(t)|_{t=\pm \tsym / (4r)} = \frac{r}{\sqrt{2}} \left[ \sin \left( \frac{\pi}{4r }\right)  \left(1 + \frac{2}{\pi}\right) +
+\cos \left( \frac{\pi}{4r }\right)  \left(1 - \frac{2}{\pi}\right)  \right]
+\]
+
+\section*{Least-Squares Channel Estimation and Equalization}
+
+\paragraph{Channel estimation}
+\begin{equation}
+h^\dag[n] = \arg \min_{\hat h[n]} \sum_{n} (y[n] - x[n] \conv \hat h[n])^2
+\label{eq:ls_estimation}
+\end{equation}
+\begin{equation}
+{\bh}^\dag = \arg \min_{\hat \bh} ||\by - \bX \, \hat \bh||^2
+\label{eq:ls_problem}
+\end{equation}
+\begin{equation}
+\by = \bX \, \bh^\dag
+\label{eq:ls_problem_equationsSet}
+\end{equation}
+\begin{equation}
+{\bh}^\dag = \bX^{+} \,  \by
+\label{eq:ls_solution_general}
+\end{equation}
+\begin{equation}
+{\bh}^\dag = \bX^{+} \,  \by = \left( \bX^H \, \bX \right)^{-1}  \bX^H \,  \by
+\label{eq:ls_solution}
+\end{equation}
+
+\paragraph{Estimation quality}
+\begin{equation}
+\textrm{NMSE (dB)} = 10 \log_{10} \left( \frac{||\bh-\bh^\dag||^2}{||\bh||^2} \right)
+\label{eq:nmse_dB}
+\end{equation}
+
+\paragraph{Training sequences with ideal autocorrelation}
+\begin{equation}
+(\bX^H \, \bX)^{-1}=\alpha \bI
+\label{eq:desiredAutocorrelationProperty}
+\end{equation}
+\begin{equation}
+{\bh}^\dag = \alpha \bX^{H} \,  \by
+\label{eq:ls_simplified_solution}
+\end{equation}
+
+\paragraph{Equalizer design}
+\begin{equation}
+\hat \bH \, \bw = \be_{\Delta}
+\label{eq:ls_equalizer}
+\end{equation}
+\begin{equation}
+{\bw}^\dag = \hat \bH^+ \,  \be_{\Delta} = \left(\hat \bH^H \, \hat \bH \right)^{-1}  \hat \bH^H \,  \be_{\Delta}
+\label{eq:ls_solution2}
+\end{equation}
+\begin{equation}
+{\bw^\dag} = \left( \bY^H \, \bY \right)^{-1}  \bY^H \,  \bx
+\label{eq:equalizer_direct_solution}
+\end{equation}
+
+\paragraph{Correlation-matrix notation}
+\begin{equation}
+\bR_{xx} = \ev \left[ \bX^H \, \bX \right]
+\label{eq:correlationMatrixRx}
+\end{equation}
+\begin{equation}
+\br_{yx} = \ev \left[ \bX^H \, \by \right]
+\label{eq:crosscorrelationRxy}
+\end{equation}
+\begin{equation}
+{\bh}^\dag = \bR_{xx}^{-1}  \, \br_{yx}
+\label{eq:ls_solution_correlationNotation}
+\end{equation}
+
+\section*{Channel Capacity}
+
+\paragraph{AWGN channel capacity}
+\begin{equation}
+C_{[\textrm{bps}]} = \BW \log_2 (1 + \snr)
+\label{eq:awgnChannelCapacity}
+\end{equation}
+
+\paragraph{Capacity per channel use (real and complex)}
+\begin{equation}
+\overline C_{[\textrm{bpcu}]} = \frac 1 2 \log_2 (1 + \snr)
+\label{eq:capacityDiscreteAWGN}
+\end{equation}
+\begin{equation}
+C_{[\textrm{bpcu}]} = \log_2 (1 + \snr)
+\label{eq:capacityDiscreteAWGNComplex}
+\end{equation}
+
+\paragraph{From bits per channel use to bits per second}
+\[
+C_{[\textrm{bps}]} = R_{\textrm{sym}}^{\textrm{max}} C_{[\textrm{bpcu}]} = 2 \BW \left( \frac 1 2 \log_2 (1 + \snr) \right) = \BW \log_2 (1 + \snr)
+\]
+\[
+C_{[\textrm{bps}]} = R_{\textrm{sym}}^{\textrm{max}} C_{[\textrm{bpcu}]} = \BW \log_2 (1 + \snr)
+\]
+
+\paragraph{SNR and capacity in terms of transmit power}
+\begin{equation}
+\snr = \frac{S_y(f) \BW}{ \no \BW} = \frac{\kappa^2 S_x(f)}{\no} = \frac{\kappa^2 \calP}{\no \BW }
+\label{eq:awgnSNRFromTx}
+\end{equation}
+\begin{equation}
+C_{[\textrm{bps}]} = \BW \log_2 (1 + \snr) = \BW \log_2 \left(1 + \frac{\kappa^2 \calP}{\no \BW } \right)
+\label{eq:awgnChannelCapacityTransmitPower}
+\end{equation}
+
+\section*{Multicarrier Capacity and Water-Filling}
+
+\paragraph{Subchannel noise power}
+\begin{equation}
+\calP_k = \no \Delta_f
+\label{eq:subchannelNoisePower}
+\end{equation}
+
+\paragraph{Subchannel SNR}
+\begin{equation}
+\snr_k = \frac{r_k \Delta_f}{\no \Delta_f} = \frac{r_k}{\no}
+\label{eq:snr_multicarrier}
+\end{equation}
+\begin{equation}
+\snr_k = \frac{r_k}{\no} = \frac{s_k g_k}{\no}
+\label{eq:snr_multicarrierFinal}
+\end{equation}
+
+\paragraph{Total capacity}
+\begin{equation}
+C_{[\textrm{bpcu}]} = \sum_{k=1}^K \log_2 (1 + \snr_k)
+\label{eq:totalCapacity}
+\end{equation}
+\begin{equation}
+C_{[\textrm{bps}]} = R_{\textrm{sym}}^{\textrm{max}} C_{[\textrm{bpcu}]} = \Delta_f \sum_{k=1}^K \log_2 (1 + \snr_k)
+\label{eq:totalCapacityInbps}
+\end{equation}
+\begin{equation}
+C_{[\textrm{bps}]} = \Delta_f \sum_{k=1}^K \log_2 (1 + \frac{s_k^* |H(f_k)|^2}{\no})
+\label{eq:totalCapacityInbpsComplete}
+\end{equation}
+
+\paragraph{Water-filling: Lagrangian and water level}
+\[
+\calL = \sum_{k=1}^K \log_2 \left(1 + \frac{g_{k} s_k}{\no}\right) + \lambda (\sum_{k=1}^K s_k \Delta_f - \calP)
+\]
+\begin{equation}
+s_j +  \frac {\no} {g_j} = \frac{-1}{\lambda \Delta_f \ln 2} = \calC, \textrm{ the \emph{water level} constant}
+\label{eq:waterfill}
+\end{equation}
+
+\paragraph{Water-filling solution (discrete)}
+\begin{equation}
+\calP_k^* = \max \left(\calC - \frac{\no}{g_k}, 0 \right)
+\label{eq:waterfillingDiscreteSolution}
+\end{equation}
+
+\paragraph{Water-filling solution (continuous)}
+\begin{equation}
+S^*(f) = \max \left(\calC - \frac{\no}{|H(f)|^2}, 0 \right)
+\label{eq:waterfillingContinuosSolution}
+\end{equation}
+\begin{equation}
+\int_{0}^{\BW} S^*(f) \textrm{d}f = \calP
+\label{eq:waterfillingContinuosSolutionConstrain}
+\end{equation}
+
+\paragraph{Capacity of a frequency-selective channel}
+\begin{equation}
+C_{[\textrm{bps}]} = \int_{0}^{\BW} \log_2 \left( 1 + \frac{S^*(f) |H(f)|^2}{\no} \right) \textrm{d}f
+\label{eq:frequencySelectiveCapacity}
+\end{equation}
+\begin{equation}
+C_{[\textrm{bps}]} = \frac{\BW}{K} \sum_{k=1}^K \log_2 \left( 1 + \frac{s_k^* |H(f_k)|^2}{\no} \right)
+\end{equation}
+
+\section*{Carrier Synchronization}
+
+\paragraph{Frequency and phase offsets}
+\begin{equation}
+\hat x(t) = x(t) e^{j \aw_c t} e^{j[(- \aw_c + \aw_{\Delta}) t + \phi]} = x(t) e^{j(\aw_{\Delta} t + \phi)}
+\label{eq:offsets_freq_phase}
+\end{equation}
+
+\paragraph{Pilot-tone / IF-based synchronization}
+\begin{equation}
+\aw_{\Delta} = \aw_o + \aw_{\textrm{IF}}
+\label{eq:syncViaIF}
+\end{equation}
+\begin{equation}
+\aw_{\textrm{IF}} \in \textrm{~~} ]\aw_{\textrm{max}} + 2 \pi \BW, 0.5\aw_c - \pi \BW - \aw_{\textrm{max}}[
+\label{eq:ifRange}
+\end{equation}
+
+\section*{VCO and Phase-Locked Loop (PLL)}
+
+\paragraph{VCO output}
+\begin{equation}
+y(t)=\cos(2 \pi f_o t + \hat \phi_o(t))
+\label{eq:vcoOutput}
+\end{equation}
+\begin{equation}
+y(t)=\cos(2 \pi (f_i + \Delta_f) t + \hat \phi_o(t)) = \cos(2 \pi f_i t +  \phi_o(t))
+\label{eq:vcoTrick}
+\end{equation}
+
+\paragraph{Instantaneous frequency}
+\begin{equation}
+\omega(t) = \frac{\textrm{d} \theta(t)}{\textrm{d} t}
+\label{eq:instantaneousFrequency}
+\end{equation}
+\begin{equation}
+\omega(t) = \frac{\textrm{d} (2 \pi f_n t + \phi(t)) }{\textrm{d} t} = 2 \pi f_n + \frac{\textrm{d} \phi(t) }{\textrm{d} t}
+\label{eq:vcoOmega}
+\end{equation}
+
+\paragraph{VCO control}
+\begin{equation}
+\omega(t) = 2 \pi f_n + g c(t)
+\label{eq:vco1}
+\end{equation}
+\begin{equation}
+c(t) = \frac{\textrm{d} \phi(t) }{\textrm{d} t}
+\label{eq:vcoControl}
+\end{equation}
+\begin{equation}
+\phi_o(t) = \int_{-\infty}^t c(t) \textrm{d}t
+\label{eq:vcoIntegral}
+\end{equation}
+
+\paragraph{Phase detector (mixer)}
+\[
+\sin(a) \cos(b) = \frac{1}{2}[\sin(a-b) + \sin(a+b)]
+\]
+\begin{equation}
+r(t) y(t) = \frac{1}{2}[\sin(\phi_i(t) - \phi_o(t)) +  \sin(4 \pi f_i t + \phi_i(t) + \phi_o(t))]
+\label{eq:mixerOutput}
+\end{equation}
+\[
+\sin(\phi_i(t) - \phi_o(t)) \approx \phi_i(t) - \phi_o(t) = \epsilon(t)
+\]
+
+\paragraph{PLL transfer functions (continuous time)}
+\begin{equation}
+H_{\phi}(s) = \frac{\Phi_o(s)}{\Phi_i(s)} = \frac{L(s)}{L(s)+s}
+\label{eq:pllTransferFunction}
+\end{equation}
+\begin{equation}
+\frac{E(s)}{\Phi_i(s)} = \frac{1}{1+L(s)/s} = \frac{s}{L(s)+s}
+\label{eq:pllErrorTrFun}
+\end{equation}
+\begin{equation}
+H(s)=\frac{G(s)}{G(s)+1}
+\label{eq:feedbackControl}
+\end{equation}
+
+\paragraph{Second-order PLL (continuous time)}
+\begin{equation}
+L(s) = \alpha + \frac{\alpha \beta}{s} = \alpha \frac{(s + \beta)}{s}
+\label{eq:pllSecondOrder}
+\end{equation}
+\begin{equation}
+H_{\phi}(s) = \frac{s \alpha + \alpha \beta}{s^2 + \alpha s + \alpha \beta}
+\label{eq:pllSecondOrder2}
+\end{equation}
+
+\paragraph{Discrete-time VCO}
+\begin{equation}
+\phi[n] = \phi[n-1] + \gamma c[n]
+\label{eq:vcoControlDiscreteTime}
+\end{equation}
+\begin{equation}
+\phi[n] = \phi[n-1] + \gamma c[n-1]
+\label{eq:vcoControlDiscreteTime2}
+\end{equation}
+\begin{equation}
+\frac{\Phi(z)}{C(z)} = \frac{\gamma}{1-z^{-1}}
+\label{eq:vcoControlZtransform}
+\end{equation}
+
+\paragraph{Discrete-time PLL transfer function}
+\begin{equation}
+H_{\phi}(z) = \frac{\Phi_o(z)}{\Phi_i(z)} = \frac{G(z)}{G(z)+1} = \frac{\gamma L(z)}{\gamma L(z)+1-z^{-1}}
+\label{eq:pllTransferFunctionDiscreteTime}
+\end{equation}
+
+\paragraph{Second-order PLL (discrete time)}
+\begin{equation}
+L(z) = \frac{C(z)}{E(z)} = \alpha + \frac{\beta}{1-z^{-1}}
+\label{eq:pllLzSecondOrder}
+\end{equation}
+\begin{equation}
+G(z) = \frac{\gamma (\alpha + \beta - \alpha z^{-1})}{(1-z^{-1})^2}
+\label{eq:pllOpenLoop2order}
+\end{equation}
+\begin{equation}
+L(z) = \frac{\alpha + \beta - \alpha z^{-1}}{1-z^{-1}}
+\label{eq:pllLzSecondOrder2}
+\end{equation}
+\begin{equation}
+c[n] = (\alpha+\beta)\epsilon[n]  - \alpha \epsilon[n-1] + c[n-1]
+\label{eq:pllDifferenceEq2}
+\end{equation}
+\begin{equation}
+H_{\phi}(z) = \frac{\Phi_o(z)}{\Phi_i(z)} = \frac{\gamma(\alpha+\beta) - \alpha \gamma z^{-1}}{\gamma(\alpha+\beta)+1 - (2+\alpha \gamma) z^{-1} + z^{-2}}
+\label{eq:pllTransferFunctionDiscreteTimeComplete}
+\end{equation}
+
+\section*{Vector Channel}
+\[
+p(\by) = \sum_{i=0}^{M-1} p(\by|\bx_i) p(\bx_i)
+\]
+

@@ -1,0 +1,144 @@
+\section*{Spectral Efficiency}
+\begin{equation}
+\eta \defeq \frac {R} {\BW}
+\label{eq:spectral_efficiency}
+\end{equation}
+
+\section*{QAM Signal}
+
+\paragraph{QAM modulated signal}
+\begin{equation}
+x_{\textrm{QAM}}(t) = x_i(t) \cos(\aw_c t) + x_q(t) \sin(\aw_c t)
+\label{eq:qam}
+\end{equation}
+
+\paragraph{Alternative convention (subtraction)}
+\begin{equation}
+x_{\textrm{QAM}}(t) = x_i(t) \cos(\aw_c t) - x_q(t) \sin(\aw_c t)
+\label{eq:qam2}
+\end{equation}
+
+\paragraph{Recovering the in-phase component}
+\begin{eqnarray}
+x_{\textrm{QAM}}(t) \cos(\aw_c t) & = & x_i(t) \cos^2(\aw_c t) - x_q(t) \sin(\aw_c t)  \cos(\aw_c t) \nonumber \\
+& = & \frac{1}{2} \left[ x_i(t)(1+\cos(2\aw_c t)) - x_q(t) \sin(2\aw_c t) \right] \nonumber \\
+& = & \frac{x_i(t)}{2} + \frac{1}{2} \left[ x_i(t)\cos(2\aw_c t) - x_q(t) \sin(2\aw_c t)\right]
+\label{eq:qam_recovery}
+\end{eqnarray}
+
+\paragraph{Recovery via integration (correlation)}
+\begin{eqnarray*}
+\int_{-\infty}^\infty x_{\textrm{QAM}}(t) \cos(\aw_c t) dt & = & \int_{-\infty}^\infty \left[ x_i(t) \cos^2(\aw_c t) - x_q(t) \sin(\aw_c t)  \cos(\aw_c t) \right] dt\\
+& = & \frac{1}{2} \int_{-\infty}^\infty x_{i}(t) dt
+\end{eqnarray*}
+
+\section*{Complex Envelope}
+
+\paragraph{Definition (matching the ``+'' convention)}
+\[
+x_{\textrm{ce}}(t) = x_i(t) - j x_q(t)
+\]
+\begin{align}
+x_{\textrm{QAM}}(t) = & \real{ x_{\textrm{ce}}(t) e^{j \aw_c t} } \notag \\
+ = & \real{ [x_i(t)- jx_q(t)] [\cos(\aw_c t)+j\sin(\aw_c t)]} \notag \\
+ = & x_i(t) \cos(\aw_c t) + x_q(t) \sin(\aw_c t)
+\label{eq:qam_complex}
+\end{align}
+
+\paragraph{Definition (matching the ``$-$'' convention)}
+\begin{equation}
+x_{\textrm{ce}}(t) = x_i(t) + j x_q(t)
+\label{eq:complex_envelope}
+\end{equation}
+
+\paragraph{Spectrum of the QAM signal}
+\begin{align}
+X_{\textrm{QAM}}(\aw) = & \calF \{ x_{\textrm{QAM}}(t) \}  \notag \\
+ = & \calF \{ \real{ x_{\textrm{ce}}(t) e^{j \aw_c t} } \} \notag \\
+= & \calF \{ 0.5 \left( x_{\textrm{ce}}(t) e^{j \aw_c t} + x_{\textrm{ce}}^*(t) e^{-j \aw_c t} \right)  \} \notag \\
+= & 0.5 \left( \calF \{ x_{\textrm{ce}}(t) e^{j \aw_c t} \} + \calF \{ x_{\textrm{ce}}^*(t) e^{-j \aw_c t} \} \right) \notag \\
+= & 0.5 \left( X_{\textrm{ce}}(\aw - \aw_c) +  X_{\textrm{ce}}^*(-\aw - \aw_c) \right)
+\label{eq:qam_complex_in_freq_domain}
+\end{align}
+
+\paragraph{Power of the complex envelope}
+\[
+P_{\textrm{ce}} = 2 P_{\textrm{QAM}}
+\]
+
+\section*{Analytic Signal and Hilbert Transform}
+
+\paragraph{Inverse Fourier transform of the unit step}
+\[
+\calF^{-1}\{u(f)\} = \frac{\delta(t)}{2} + \frac{j}{2 \pi t} = \frac{1}{2} \left( \delta(t) + j \frac{1}{\pi t} \right)
+\]
+
+\paragraph{Analytic signal (frequency domain)}
+\begin{equation}
+X_{+}(f) = 2 u(f) X_{\textrm{QAM}}(f)
+\label{eq:qamAnalytic}
+\end{equation}
+
+\paragraph{Analytic signal (time domain)}
+\begin{align}
+x_{+}(t) & = \calF^{-1} \{ X_{+}(f) \} = 2 \calF^{-1} \{u(f) X_{\textrm{QAM}}(f) \} \\
+  & = x_{\textrm{QAM}}(t) + j \left( x_{\textrm{QAM}}(t) \conv \frac{1}{\pi t} \right)
+\end{align}
+
+\paragraph{Hilbert transform}
+\[
+\bar h(t) = \left\{ {\begin{array}{cc} {\frac 1 {\pi t}} & {, t \ne 0}\\ 0 & {, t=0} \end{array}  } \right.
+\]
+\[
+\check{x}(t) = x(t) \conv \bar h(t) = \int_{- \infty}^\infty \frac{x(u)}{\pi (t - u)} du
+\]
+\[
+x_{+}(t) = x_{\textrm{QAM}}(t) \conv \left(\delta(t) + j \frac 1 {\pi t} \right) = x_{\textrm{QAM}}(t) + j \check x(t)
+\]
+
+\section*{Sampling of Complex Signals}
+\begin{equation}
+\fs > F_\tmax
+\label{eq:samplingTheoremComplexSignalsRepeated}
+\end{equation}
+(equivalently $\fs > \BW$ for a complex analytic baseband signal.)
+
+\section*{Passband Channels and Baseband Equivalents}
+
+\paragraph{Analytic passband impulse response and frequency response}
+\begin{equation}
+h_{+}(t) = h(t) + j \check{h}(t)
+\label{eq:analyticPassbandTimeDomain}
+\end{equation}
+\begin{equation}
+H_{+}(f) = 2 u(f) H(f)
+\label{eq:analyticPassbandFrequencyDomain}
+\end{equation}
+
+\paragraph{Baseband equivalent channel}
+\begin{equation}
+h_{\textrm{bb}}(t) = h_{+}(t) e^{-j 2 \pi f_c t}
+\label{eq:basebandEquivalentTimeDomain}
+\end{equation}
+\begin{equation}
+H_{\textrm{bb}}(f) = H_{+}(f + f_c)
+\label{eq:basebandEquivalentFreqDomain1}
+\end{equation}
+\begin{equation}
+H_{\textrm{bb}}(f) = H(f + f_c)
+\label{eq:eq:basebandEquivalentFreqDomain2}
+\end{equation}
+
+\paragraph{Baseband equivalent system}
+\begin{equation}
+y_{\textrm{bb}}(t) = x_{\textrm{bb}}(t) \conv \left( \frac{1}{2} h_{\textrm{bb}}(t) \right)
+\end{equation}
+\begin{equation}
+Y_{\textrm{bb}}(f) = H(f+f_c) X_{\textrm{bb}}(f)
+\end{equation}
+
+\section*{Single-Tap Channel Estimation (Preamble-Based)}
+\begin{equation}
+\hat H(f_c) = \frac{1}{K} \sum_{k=1}^K \frac{Y_k}{X_k}
+\end{equation}
+(equalization is then done by normalizing the received symbols: $Y_k / \hat H(f_c)$.)

@@ -1,0 +1,158 @@
+
+\section*{OFDM Signal and Channel Model}
+
+\paragraph{OFDM passband signal}
+\begin{equation}
+x_{\textrm{OFDM}}(t) = \real{ x_{\textrm{ce}}(t) e^{j 2 \pi f_c t} }
+\label{eq:ofdm}
+\end{equation}
+
+\paragraph{Per-subchannel input-output relation}
+\begin{equation}
+Y[k] \approx H[k] X[k] + N[k]
+\label{eq:dmt_fundamental_equation}
+\end{equation}
+
+\paragraph{Subchannel SNR}
+$$
+	 \snr_k = \frac{P_k}{N_k} = \frac{s_k \Delta_f}{ \no} = \frac{\varepsilon_k |H_k|^2}{2 \sigma^2} = \frac{\varepsilon_k |H_k|^2}{\no}
+	 $$
+$$
+	 \snr_k = \frac{\varepsilon_k |H_k|^2}{\sigma^2} = \frac{\varepsilon_k |H_k|^2}{\no/2}
+	 $$
+
+\section*{Bit Loading}
+
+\paragraph{Bits per subchannel (SNR gap $\Gamma$)}
+\begin{equation}
+b_k  = \log_2 \left(1 + \frac{\snr_k}{\Gamma }\right)
+\label{eq:bitloading2}
+\end{equation}
+
+\paragraph{With coding gain $\Gamma_c$}
+\begin{equation}
+b_k  = \log_2 \left(1 + \frac{\snr_k \Gamma_c}{\Gamma }\right)
+\label{eq:bitloading3}
+\end{equation}
+
+\paragraph{With target margin $\gamma_t$}
+\begin{equation}
+\label{eq:margin}
+\hat b_k \triangleq \log_2 \left(1 + \frac{\snr_k \Gamma_c}{\Gamma \gamma_t}\right) = \log_2 \left(1 + \frac{\snr_k }{\zeta}\right)
+\end{equation}
+\[
+10 \log_{10} \left( \frac{\snr_k \Gamma_c}{\Gamma \gamma_t} \right) = 10 \log_{10} \snr_k - \zeta_{\dB}
+\]
+\[
+\zeta_{\dB} = 10 \log_{10} (\Gamma) + 10 \log_{10} (\gamma_t) - 10 \log_{10} (\Gamma_c)
+\]
+
+\paragraph{Margin}
+\begin{equation}
+\gamma = \frac{\snr}{(2^{\tilde b} - 1) \Gamma}
+\label{eq:margin_explicit}
+\end{equation}
+\begin{equation}
+\gamma_k = \frac{2^{b_k}-1}{2^{\tilde b_k}-1}
+\label{eq:margin_explicit2}
+\end{equation}
+
+\paragraph{Effective SNR}
+\begin{equation}
+\hat b = \log_2 \left( 1+ \snr^{\textrm{effective}} \right)
+\end{equation}
+\begin{equation}
+\snr_{\dB}^{\textrm{effective}} = \snr_{\dB} - \Gamma_{\dB} - \gamma_{\dB}
+\end{equation}
+
+\section*{Data Rate}
+
+\paragraph{Bits per DMT symbol and rate}
+\begin{equation}
+b = \sum_{k=0}^{K-1} b_k
+\end{equation}
+\begin{equation}
+R = \frac{b}{\tdmt} = b \rdmt = \rdmt \sum_{k=0}^{K-1} b_k
+\end{equation}
+\begin{equation}
+R = \rdmt \sum_{k=0}^{K-1} \log_2 \left(1 + \frac{\snr_k}{\zeta}\right) \textrm{~~~~~~~bps}
+\label{eq:rate}
+\end{equation}
+
+\paragraph{DMT symbol period and sampling frequency (cyclic prefix length $L_{\textrm{cp}}$)}
+\[
+\tdmt = (N + L_{\textrm{cp}}) \ts
+\]
+\begin{equation}
+\fs = (N+L_{\textrm{cp}}) \rdmt
+\label{eq:dmt_fs_rdmt}
+\end{equation}
+
+\paragraph{Rate without cyclic-prefix overhead}
+\begin{equation}
+\hat R = \Delta_f \sum_{k=0}^{K-1} \log_2 \left(1 + \frac{\snr_k}{\zeta}\right)
+\label{eq:rate2}
+\end{equation}
+
+\paragraph{DMT symbol rate and overall rate}
+\begin{equation}
+ \rdmt = \Delta f \left(\frac {N} {N+L_{\textrm{cp}}} \right)
+\label{eq:dmt_delta_f_rdmt}
+\end{equation}
+\begin{equation}
+R = \Delta f \left(\frac {N} {N+L_{\textrm{cp}}} \right) \sum_{k=0}^{K-1} \log_2 \left(1 + \frac{\snr_k}{\zeta}\right)
+\label{eq:rate3}
+\end{equation}
+
+\paragraph{Cyclic-prefix overhead}
+\[
+R = \left(\frac {N} {N+L_{\textrm{cp}}} \right) \hat R
+\]
+\begin{equation}
+R = (1 - \nu) \hat R
+\label{eq:overhead}
+\end{equation}
+\[
+\nu = 1 - \left(\frac {N} {N+L_{\textrm{cp}}} \right)
+\]
+
+\paragraph{Cyclic-prefix length as a fraction of $N$}
+\[
+L_{\textrm{cp}}=m \frac{N}{128}
+\]
+
+\section*{Power}
+
+\paragraph{Total power in the data-carrying subchannels}
+\[
+\calP_d = \sum_{k=0}^{N-1} P_k
+\]
+\[
+\hat \calP_d = \frac{1}{N}\sum_{k=0}^{N-1} |X[k]|^2 \approx \sum_{k=0}^{N-1} P_k = \Delta_f \sum_{k=0}^{N-1} s_k
+\]
+\[
+\calP_d = \sum_{k=0}^{N-1} P_k = P_0 + P_{N/2} + 2 \sum_{k=1}^{N/2-1} P_k
+\]
+
+\section*{Matrix Formulation}
+
+\paragraph{Singular value decomposition}
+\begin{equation}
+\bA = \bF \, \bS \, \bM^H
+\label{eq:svd_decomposition}
+\end{equation}
+
+\paragraph{Diagonalization of the channel}
+\begin{align*}
+\bY &= \bF^H \by \\
+&= \bF^H \, \bH \, \bx \\
+&= \bF^H \, \bH \, \bM \, \bX \\
+&= \bF^H \, (\bF \, \bS \, \bM^H) \, \bM \, \bX  = (\bF^H \, \bF) \, \bS \, (\bM^H \, \bM) \, \bX  = \bI \, \bS \, \bI \, \bX \\
+&= \bS \bX
+\end{align*}
+
+\paragraph{Eigenvalue decomposition}
+\begin{equation}
+\bA \, \bV = \bV \, \bD
+\label{eq:eigenvalueDecomposition}
+\end{equation}
