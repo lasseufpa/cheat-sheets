@@ -1,121 +1,198 @@
-\section*{Chapter 1 -- Signals}
+\section*{Amplitude Modulation}
 
-\textbf{Sampling theorem:}
+\paragraph{DSB-SC modulation and coherent demodulation}
+\begin{equation}
+s(t) = m(t) \cos(2 \pi f_c t + \phi)
+\label{eq:am-dsb}
+\end{equation}
 \[
-F_s > 2 f_{\max}.
-\]
-
-\textbf{Even and odd components:}
-\[
-x_{\mathrm{even}}[n]=\frac{1}{2}\bigl(x[n]+x[-n]\bigr),\qquad
-x_{\mathrm{odd}}[n]=\frac{1}{2}\bigl(x[n]-x[-n]\bigr).
+m(t) = \textrm{\ci{lowpass}} \{ \, s(t) \cos(2 \pi f_c t +  \phi) \, \}
 \]
 
-\textbf{Angular frequency:}
+\paragraph{AM (with carrier)}
+\begin{equation}
+s(t) = (m(t) + A) \cos(2 \pi f_c t + \phi)
+\label{eq:amSignal}
+\end{equation}
+
+\paragraph{AM power spectral density}
+\begin{equation}
+S_{\textrm{AM}}(f) = \frac{1}{4} \left[S_m(f+f_c) + S_m(f-f_c) \right] + \frac{A^2}{4} \left[ \delta(f-f_c) +  \delta(f+f_c) \right]
+\label{eq:amPSD}
+\end{equation}
+
+\paragraph{Modulation index}
+\begin{equation}
+h = \frac{\textrm{max}\{m(t)\}}{A}
+\label{eq:amModulationIndex}
+\end{equation}
+
+%\paragraph{AM power (sinusoidal $m(t)$)}
+%\begin{equation}
+%\calP_{\textrm{AM}} = \calP_m + \calP_c = \frac{A^2 h^2}{4} + \frac{A^2}{2} = \frac{A^2}{2} \left(1 + \frac{h^2}{2} \right) = \calP_c \left(1 + \frac{h^2}{2} \right)
+%\label{eq:amPower}
+%\end{equation}
+%
+%\paragraph{AM power (Gaussian $m(t)$, with $\sigma = hA/3$)}
+%\begin{equation}
+%\calP_{\textrm{AM}} = \calP_m + \calP_c = \frac{\sigma^2}{2} + \frac{A^2}{2} = \frac{h^2 A^2}{18} + \frac{A^2}{2} = \frac{A^2}{2} \left(1 + \frac{h^2}{9} \right) = \calP_c \left(1 + \frac{h^2}{9} \right)
+%\label{eq:amPower2}
+%\end{equation}
+
+\paragraph{Image frequency (superheterodyne, high-side injection)}
+\begin{equation}
+f_{\textrm{IM}} = f_{\textrm{LO}}+f_{\textrm{IF}} = f_{\textrm{RF}} + 2 f_{\textrm{IF}}
+\end{equation}
+
+\section*{Wavelength and Thermal Noise}
+
+\begin{equation}
+\lambda = c / f
+\label{eq:antenna}
+\end{equation}
+\begin{equation}
+\no = K_b T_k
+\label{eq:psdThermal}
+\end{equation}
+
+\section*{Signal-to-Noise Ratio}
+
+\begin{equation}
+\snr \defeq \frac{\calP_{\textrm{signal of interest}}}{\calP_{\textrm{undesired signal}}}
+\label{eq:snr_simple}
+\end{equation}
+\begin{equation}
+\snr \defeq \frac{\ev[|r_s(t)|^2]}{\ev[|r_u(t)|^2]} = \frac{\ev[|r_s(t)|^2]}{\ev[|r(t)-r_s(t)|^2]}
+\label{eq:snr_simple2}
+\end{equation}
+
+\paragraph{SNR for additive noise}
+\begin{align}
+\snr & = \frac{\ev[|s(t)|^2]}{\ev[|\nu(t)|^2]} = \frac{\ev[|r(t)-\nu(t)|^2]}{\ev[|\nu(t)|^2]} \nonumber \\
+     & = \frac{\ev[|r(t)|^2]}{\ev[|\nu(t)|^2]} - 1
+\end{align}
+\begin{equation}
+\snr = \frac{\ev[|r_s(t)|^2]}{\ev[|r_u(t)|^2]}  = \frac{\ev[|s(t)|^2]}{\ev[|\nu(t)|^2]} = \frac{\ev[|r(t)-\nu(t)|^2]}{\ev[|\nu(t)|^2]}  = \frac{\ev[|r(t)|^2]}{\ev[|\nu(t)|^2]} - 1 = \frac{\calP_r}{\sigma^2} - 1
+\label{eq:snr_awgn}
+\end{equation}
+
+\paragraph{Signal-to-interference-plus-noise ratio}
+\begin{equation}
+\textrm{SINR} \defeq \frac{\calP_s}{\calP_{\nu} + \calP_i}
+\label{eq:sinr}
+\end{equation}
+
+\paragraph{LTI channel with Gaussian noise}
+\begin{equation}
+r(t) = s(t) \conv h_c(t) + \nu(t)
+\label{eq:ltiGaussianChannelPreliminar}
+\end{equation}
+
+\paragraph{Simplified channel (flat gain $\kappa$)}
 \[
-\omega = 2\pi f, \qquad \omega = \Omega f_s.
+r(t) = \kappa s(t) + \nu(t)
+\]
+\begin{equation}
+\snr = \frac{\ev[|r_s(t)|^2]}{\ev[|\nu(t)|^2]} = \frac{\kappa^2 \ev[|s(t)|^2]}{\ev[|\nu(t)|^2]}
+\label{eq:snrAtReceiver}
+\end{equation}
+
+\section*{Link Budget}
+
+\begin{equation}
+\calP_{\textrm{Rx}} \textrm{~(dBm)} = \calP_{\textrm{Tx}} \textrm{~(dBm)} + \textrm{gains~(dB)} - \textrm{losses~(dB)}
+\label{eq:linkBudgetIndBm}
+\end{equation}
+
+\paragraph{Free-space received power}
+\begin{equation}
+\calP_{\textrm{Rx}}  =   \frac{ \calP_{\textrm{Tx}} }{4 \pi d^2} A_{\textrm{Rx}}
+\label{eq:receivedPowerFreeSpace}
+\end{equation}
+
+\paragraph{EIRP}
+\begin{equation}
+\textrm{EIRP (dB)} = 10 \log_{10} (G_{\textrm{Tx}}) + 10 \log_{10} (\calP_{\textrm{Tx}})
+\label{eq:eirp_dB}
+\end{equation}
+
+\paragraph{Receiver antenna gain}
+\begin{equation}
+G_{\textrm{Rx}} = \frac{4 \pi}{\lambda^2} A_{\textrm{Rx}}
+\label{eq:receiverAntennaGain}
+\end{equation}
+
+\paragraph{Friis transmission equation (linear scale)}
+\begin{equation}
+\calP_{\textrm{Rx}}  = \calP_{\textrm{Tx}}  G_{\textrm{Tx}} G_{\textrm{Rx}}  \left( \frac{\lambda}{4 \pi d} \right)^2
+\label{eq:frissInLinearScale}
+\end{equation}
+
+\paragraph{Free-space path loss}
+\[
+L_{\textrm{fs}} = \left( \frac{4 \pi f d}{c} \right)^2
+\]
+\begin{equation}
+L_{\textrm{fs}} = 32.45 + 20 \log_{10}(d) + 20 \log_{10}(f)
+\label{eq:freeSpacePathLoss}
+\end{equation}
+(with $d$ in km and $f$ in MHz.)
+
+\paragraph{Friis transmission equation (dB scale)}
+\begin{equation}
+\calP_{\textrm{Rx}} = \calP_{\textrm{Tx}} + G_{\textrm{Tx}} + G_{\textrm{Rx}} - L_{\textrm{fs}}
+\label{eq:friisTransmissionEq}
+\end{equation}
+
+\paragraph{Realistic link budget}
+\begin{equation}
+\calP_{\textrm{Rx}} = \calP_{\textrm{Tx}} + G_{\textrm{Tx}} + G_{\textrm{Rx}} - L_{\textrm{pl}}  - L_{\text{cables}}
+\label{eq:realisticLinkBudget}
+\end{equation}
+
+\section*{Noise Factor and Noise Figure}
+
+\paragraph{Amplifier noise output}
+\begin{equation}
+\calP_{\textrm{out}}^{t} = G F \calP_{\textrm{in}}^{t}
+\label{eq:simplifiedExpressionForNoiseOutput}
+\end{equation}
+\begin{equation}
+\calP_{\textrm{out}} = \calP_{\textrm{out}}^{s} + \calP_{\textrm{out}}^{t} = G \calP_{\textrm{in}}^{s} + G \textrm{F} \calP_{\textrm{in}}^{t}
+\label{eq:amplifierOutputPower}
+\end{equation}
+\begin{equation}
+\snr_{\textrm{out}} = \frac{G\calP_{\textrm{in}}^{s}}{\calP_{\textrm{out}}^{t}} = \frac{G\calP_{\textrm{in}}^{s}}{G \calP_{\textrm{in}}^{t}F} = \frac{\calP_{\textrm{in}}^{s}}{\calP_{\textrm{in}}^{t}F}
+\label{eq:snrInTermsOfF}
+\end{equation}
+
+\paragraph{Noise factor $F$ and noise figure NF}
+\begin{equation}
+\textrm{F}  = \frac{\snr_{\textrm{in}}}{\snr_{\textrm{out}}}
+\label{eq:noiseFactor2}
+\end{equation}
+\begin{equation}
+\textrm{NF} = 10 \log_{10} \left( \textrm{F} \right)
+\label{eq:noiseFigure2}
+\end{equation}
+\begin{equation}
+\snr_{\textrm{out}} = \snr_{\textrm{in}} - \textrm{NF} \quad \text{(in dB)}
+\label{eq:noiseFigure3}
+\end{equation}
+\begin{equation}
+\snr_{\textrm{out}} = \calP_{\textrm{in}}^{s} -\no - 10\log_{10}(\BW) - \textrm{NF}
+\label{eq:snrout_with_nf}
+\end{equation}
+
+\paragraph{Noise PSD at amplifier output}
+\[
+\frac{1}{\BW} \calP_{\textrm{out}}^{t} = \frac{1}{\BW} G \textrm{F} \calP_{\textrm{in}}^{t} \rightarrow
+S_{\textrm{out}}^{t}(f) = G \textrm{F} S_{\textrm{in}}^{t}(f)
 \]
 
-\textbf{Block processing:}
-when $N$ samples are available, the number $M$ of windows with $L$ samples and a shift of $S$ samples is
-\[
-M=\left\lfloor \frac{N-L}{S}\right\rfloor +1.
-\]
+\paragraph{Friis formula for cascaded noise factor}
+\begin{equation}
+F_{\textrm{cascade}} = F_1 + \frac{F_2-1}{G_1} + \frac{F_3-1}{G_1G_2} + \ldots + \frac{F_N-1}{G_1G_2 \ldots G_{N-1}}
+\label{eq:friisNoiseFactor}
+\end{equation}
 
-\textbf{Ideal sampling:}
-\[
-x_s(t)=\sum_n x[n]\delta(t-nT_s).
-\]
-
-\textbf{Power and energy:}
-\[
-P_{\mathrm{sinusoid}}=\frac{A^2}{2},\qquad
-E_{\ee^{-at}u(t)}=\frac{1}{2a},\quad a>0.
-\]
-\[
-P=\frac{E}{\Delta t},\qquad
-E=\int_{\langle\Delta t\rangle}p(t)\,dt.
-\]
-\[
-A\cos(\omega t+\phi)\Rightarrow P=\frac{A^2}{2},
-\qquad
-x(t)=k\Rightarrow P=k^2.
-\]
-
-\textbf{SNR:}
-\[
-\mathrm{SNR}_{\mathrm{linear}}=\frac{P_x}{P_n},\qquad
-\mathrm{SNR}_{\mathrm{dB}}=
-10\log_{10}\left(\frac{P_x}{P_n}\right).
-\]
-For uniform quantization noise in the interval
-$[-\Delta/2,\Delta/2]$,
-\[
-P_n=\frac{\Delta^2}{12}.
-\]
-
-\textbf{Autocorrelation:}
-\[
-R(\tau)=\frac{A^2}{2}\cos(\omega\tau),\qquad
-R[i]=\frac{1}{2}\cos(\Omega i).
-\]
-
-Unbiased autocorrelation of a signal $x[n]$ with length $N$:
-\[
-R_x[\ell]=
-\frac{1}{N-|\ell|}
-\sum_n x[n+\ell]x^*[n],
-\quad
-\ell=-(N-1),\ldots,N-1.
-\]
-
-Unnormalized autocorrelation:
-\[
-R_x[\ell]=\sum_n x[n+\ell]x^*[n].
-\]
-
-Unnormalized cross-correlation:
-\[
-R_{xy}[\ell]\triangleq
-\sum_{n=-\infty}^{\infty}x[n+\ell]y^*[n]
-=
-\sum_{n=-\infty}^{\infty}x[n]y^*[n-\ell].
-\]
-
-\textbf{Periodicity:}
-\[
-T=\frac{2\pi}{\omega},\qquad
-\frac{m}{N_0}=\frac{\Omega}{2\pi}.
-\]
-
-\textbf{A/D and D/A modeling:}
-\[
-x(t)\to \mathrm{sampling}\to S/D\to \mathrm{quantization}.
-\]
-
-\[
-x_q[n]\to D/S\bigl(x_{s,q}(t)\bigr)
-\to \mathrm{reconstruction}
-\to x(t).
-\]
-
-\textbf{Useful identities:}
-\[
-\cos(\theta)=\frac{\ee^{\jj\theta}+\ee^{-\jj\theta}}{2},
-\qquad
-\sin(\theta)=\frac{\ee^{\jj\theta}-\ee^{-\jj\theta}}{2\jj},
-\qquad
-\Omega_k=\frac{2\pi k}{N}.
-\]
-
-\[
-\ee^{\jj0}=1,
-\quad
-\ee^{\jj\pi/2}=\jj,
-\quad
-\ee^{\jj\pi}=-1,
-\quad
-\ee^{\jj3\pi/2}=-\jj,
-\quad
-\ee^{\jj2\pi}=1.
-\]
